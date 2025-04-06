@@ -597,7 +597,7 @@
   </template>
 
   <script>
-    // Store PDF file names when attached
+    // Update PDF file inputs so that when files are attached, the file names are stored and the select is updated.
     const otReportInput = document.getElementById('otReportAttachment');
     otReportInput.addEventListener('change', (e) => {
       let names = [];
@@ -605,6 +605,12 @@
         names.push(e.target.files[i].name);
       }
       e.target.dataset.filenames = names.join(", ");
+      if (names.length > 0) {
+        const select = document.getElementById('otReportAvailable');
+        select.value = 'yes';
+        select.dataset.selected = 'Yes';
+        document.getElementById('otReportAttachmentContainer').classList.remove('hidden');
+      }
     });
     const drawingsInput = document.getElementById('drawingsAttachment');
     drawingsInput.addEventListener('change', (e) => {
@@ -613,8 +619,14 @@
         names.push(e.target.files[i].name);
       }
       e.target.dataset.filenames = names.join(", ");
+      if (names.length > 0) {
+        const select = document.getElementById('drawingsAvailable');
+        select.value = 'yes';
+        select.dataset.selected = 'Yes';
+        document.getElementById('drawingsAttachmentContainer').classList.remove('hidden');
+      }
     });
-    // Store selected value for PDF availability
+    // Also update select dataset when changed manually.
     const otReportSelect = document.getElementById('otReportAvailable');
     otReportSelect.addEventListener('change', (e) => {
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
@@ -624,7 +636,7 @@
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
     });
 
-    // Core function to add rows
+    // Core function to add rows.
     const addRow = (sectionName, defaultData) => {
       const sectionDiv = document.querySelector(`[data-section="${sectionName}"]`);
       const tbody = sectionDiv.querySelector('.section-body');
@@ -636,7 +648,7 @@
       tbody.appendChild(template);
     };
 
-    // Event listeners for delete and toggle buttons
+    // Event listeners for delete and toggle buttons.
     document.addEventListener('click', (e) => {
       if (e.target && e.target.classList.contains('delete-row')) {
         const row = e.target.closest('.row');
@@ -664,7 +676,7 @@
       });
     });
 
-    // CSV export remains unchanged
+    // CSV export event remains unchanged.
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
@@ -694,7 +706,7 @@
       document.body.removeChild(link);
     });
 
-    // PDF export remains unchanged
+    // PDF export event remains unchanged.
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
       const opt = {
@@ -707,14 +719,14 @@
       html2pdf().set(opt).from(element).save();
     });
 
-    // Export HTML event – converts page into a static, non-editable HTML file
+    // Export HTML event – converts page into a static, non-editable HTML file.
     document.getElementById('exportHTML').addEventListener('click', () => {
       const appClone = document.getElementById('app').cloneNode(true);
       
-      // Remove export buttons from the clone
+      // Remove export buttons from the clone.
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Replace all inputs, textareas, and selects with static divs
+      // Replace all inputs, textareas, and selects with static divs.
       appClone.querySelectorAll('input, textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
@@ -728,19 +740,17 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Replace images with clones that have no event listeners and wrap in anchor tags
+      // Wrap images in anchor tags so they open in a new tab.
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
-        // Remove any inline click events by replacing with clone
-        const a = document.createElement('a');
-        a.href = img.src;
-        a.target = "_blank";
-        // Replace the old image with the new anchor-wrapped image
-        oldImg.parentNode.replaceChild(a, oldImg);
-        a.appendChild(img);
+        const anchor = document.createElement('a');
+        anchor.href = img.src;
+        anchor.target = "_blank";
+        // Replace the old image with the anchor-wrapped image.
+        oldImg.parentNode.replaceChild(anchor, oldImg);
+        anchor.appendChild(img);
       });
       
-      // Build a full HTML document using the current head and the cloned app content
       const doctype = "<!DOCTYPE html>";
       const headHTML = document.querySelector('head').outerHTML;
       const bodyHTML = `<body class="bg-gray-100 text-gray-800">${appClone.outerHTML}</body>`;
@@ -753,7 +763,7 @@
       a.click();
     });
 
-    // Photo button event – remains unchanged
+    // Photo button event – when a photo is added, wrap it in an anchor so that clicking opens it.
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -796,10 +806,11 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
-              // Instead of custom window.open, let the anchor wrapping handle it in static export.
-              imgElement.addEventListener('click', () => {
-                window.open(imgElement.src, '_blank');
-              });
+              // Wrap the image in an anchor tag so that clicking it opens the full-sized image.
+              const anchor = document.createElement('a');
+              anchor.href = imgSrc;
+              anchor.target = "_blank";
+              anchor.appendChild(imgElement);
               const deleteButton = document.createElement('button');
               deleteButton.innerText = '×';
               deleteButton.className = "delete-photo";
@@ -811,7 +822,7 @@
               caption.className = "text-xs";
               const photoCount = groupDiv.querySelectorAll('img').length + 1;
               caption.innerText = "Photo " + photoCount;
-              imgContainer.appendChild(imgElement);
+              imgContainer.appendChild(anchor);
               imgContainer.appendChild(deleteButton);
               imgContainer.appendChild(caption);
               groupDiv.appendChild(imgContainer);
@@ -823,7 +834,7 @@
       }
     });
 
-    // OT Report attachment toggle
+    // OT Report attachment toggle.
     document.getElementById('otReportAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('otReportAttachmentContainer');
       if (e.target.value === 'yes') {
@@ -832,7 +843,7 @@
         container.classList.add('hidden');
       }
     });
-    // Drawings attachment toggle
+    // Drawings attachment toggle.
     document.getElementById('drawingsAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('drawingsAttachmentContainer');
       if (e.target.value === 'yes') {

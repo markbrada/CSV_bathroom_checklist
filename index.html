@@ -597,7 +597,7 @@
   </template>
 
   <script>
-    // --- PDF File Handling ---
+    // Store PDF file names when attached
     const otReportInput = document.getElementById('otReportAttachment');
     otReportInput.addEventListener('change', (e) => {
       let names = [];
@@ -605,12 +605,6 @@
         names.push(e.target.files[i].name);
       }
       e.target.dataset.filenames = names.join(", ");
-      if (names.length > 0) {
-        const select = document.getElementById('otReportAvailable');
-        select.value = 'yes';
-        select.dataset.selected = 'Yes';
-        document.getElementById('otReportAttachmentContainer').classList.remove('hidden');
-      }
     });
     const drawingsInput = document.getElementById('drawingsAttachment');
     drawingsInput.addEventListener('change', (e) => {
@@ -619,13 +613,8 @@
         names.push(e.target.files[i].name);
       }
       e.target.dataset.filenames = names.join(", ");
-      if (names.length > 0) {
-        const select = document.getElementById('drawingsAvailable');
-        select.value = 'yes';
-        select.dataset.selected = 'Yes';
-        document.getElementById('drawingsAttachmentContainer').classList.remove('hidden');
-      }
     });
+    // Store selected value for PDF availability
     const otReportSelect = document.getElementById('otReportAvailable');
     otReportSelect.addEventListener('change', (e) => {
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
@@ -635,7 +624,7 @@
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
     });
 
-    // --- Core function to add rows ---
+    // Core function to add rows
     const addRow = (sectionName, defaultData) => {
       const sectionDiv = document.querySelector(`[data-section="${sectionName}"]`);
       const tbody = sectionDiv.querySelector('.section-body');
@@ -647,7 +636,7 @@
       tbody.appendChild(template);
     };
 
-    // --- Event Listeners ---
+    // Event listeners for delete and toggle buttons
     document.addEventListener('click', (e) => {
       if (e.target && e.target.classList.contains('delete-row')) {
         const row = e.target.closest('.row');
@@ -675,7 +664,7 @@
       });
     });
 
-    // --- CSV Export ---
+    // CSV export event
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
@@ -705,7 +694,7 @@
       document.body.removeChild(link);
     });
 
-    // --- PDF Export ---
+    // PDF export event
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
       const opt = {
@@ -718,14 +707,14 @@
       html2pdf().set(opt).from(element).save();
     });
 
-    // --- Export HTML ---
+    // Export HTML event – creates a static version of the current page
     document.getElementById('exportHTML').addEventListener('click', () => {
       const appClone = document.getElementById('app').cloneNode(true);
       
-      // Remove export buttons from the clone.
+      // Remove export buttons from the clone
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Replace inputs, textareas, and selects with static divs.
+      // Replace all inputs, textareas, and selects with static divs showing current values.
       appClone.querySelectorAll('input, textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
@@ -739,19 +728,14 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap images in anchor tags with a click event to open in new tab.
+      // Wrap images in anchor tags so they open in a new tab
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
-        const anchor = document.createElement('a');
-        anchor.href = img.src;
-        anchor.target = "_blank";
-        // Attach click event to ensure compatibility (especially in Safari).
-        anchor.addEventListener('click', (e) => {
-          e.preventDefault();
-          window.open(img.src, '_blank');
-        });
-        oldImg.parentNode.replaceChild(anchor, oldImg);
-        anchor.appendChild(img);
+        const a = document.createElement('a');
+        a.href = img.src;
+        a.target = "_blank";
+        oldImg.parentNode.replaceChild(a, oldImg);
+        a.appendChild(img);
       });
       
       const doctype = "<!DOCTYPE html>";
@@ -766,7 +750,7 @@
       a.click();
     });
 
-    // --- Photo Button Event ---
+    // Photo button event
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -809,15 +793,21 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
-              // Wrap image in anchor tag with explicit click event.
-              const anchor = document.createElement('a');
-              anchor.href = imgSrc;
-              anchor.target = "_blank";
-              anchor.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.open(imgSrc, '_blank');
+              imgElement.addEventListener('click', () => {
+                const newWindow = window.open('', '_blank');
+                newWindow.document.write(
+                  `<html>
+                    <head>
+                      <title>Photo - ${taskName}</title>
+                      <style>body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#000; }</style>
+                    </head>
+                    <body>
+                      <img src="${imgElement.src}" style="max-width:100%; max-height:100%;" alt="Photo for ${taskName}">
+                    </body>
+                  </html>`
+                );
+                newWindow.document.close();
               });
-              anchor.appendChild(imgElement);
               const deleteButton = document.createElement('button');
               deleteButton.innerText = '×';
               deleteButton.className = "delete-photo";
@@ -829,7 +819,7 @@
               caption.className = "text-xs";
               const photoCount = groupDiv.querySelectorAll('img').length + 1;
               caption.innerText = "Photo " + photoCount;
-              imgContainer.appendChild(anchor);
+              imgContainer.appendChild(imgElement);
               imgContainer.appendChild(deleteButton);
               imgContainer.appendChild(caption);
               groupDiv.appendChild(imgContainer);
@@ -841,7 +831,7 @@
       }
     });
 
-    // --- Attachment Toggles ---
+    // OT Report attachment toggle
     document.getElementById('otReportAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('otReportAttachmentContainer');
       if (e.target.value === 'yes') {
@@ -850,6 +840,7 @@
         container.classList.add('hidden');
       }
     });
+    // Drawings attachment toggle
     document.getElementById('drawingsAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('drawingsAttachmentContainer');
       if (e.target.value === 'yes') {

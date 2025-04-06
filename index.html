@@ -9,6 +9,27 @@
   <!-- html2pdf.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <style>
+      /* PDF export adjustments */
+  .pdf-export {
+    font-size: 10px;       /* smaller overall font size */
+    max-width: 8.5in;      /* constrain width to letter size */
+    margin: 0;
+    padding: 0.2rem;
+  }
+  .pdf-export h1 {
+    font-size: 16px;
+  }
+  .pdf-export h2 {
+    font-size: 12px;
+  }
+  .pdf-export table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .pdf-export th, .pdf-export td {
+    padding: 0.25rem;
+    font-size: 10px;
+  }
     /* Fixed textareas for consistent appearance */
     textarea.fixed-size {
       resize: none;
@@ -609,21 +630,25 @@
     });
 
     // PDF export event.
-    document.getElementById('exportPDF').addEventListener('click', () => {
-      const element = document.getElementById('app');
-      element.classList.add('pdf-export');
-      const opt = {
-        margin: 1,
-        filename: 'bathroom_renovation_checklist.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 1 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-      };
-      html2pdf().set(opt).from(element).save().then(() => {
-        element.classList.remove('pdf-export');
-      });
-    });
+document.getElementById('exportPDF').addEventListener('click', () => {
+  const appElement = document.getElementById('app');
+  // Apply the export-specific CSS
+  appElement.classList.add('pdf-export');
+
+  const opt = {
+    margin: 0.25, // small margin for more content per page
+    filename: 'bathroom_renovation_checklist.pdf',
+    image: { type: 'jpeg', quality: 1.0 },
+    html2canvas: { scale: 3 }, // higher scale for higher resolution
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  html2pdf().set(opt).from(appElement).save().then(() => {
+    // Remove the export CSS class after saving
+    appElement.classList.remove('pdf-export');
+  });
+});
   </script>
 </body>
 </html>

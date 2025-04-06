@@ -664,7 +664,7 @@
       });
     });
 
-    // CSV export event
+    // CSV export remains unchanged
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
@@ -694,7 +694,7 @@
       document.body.removeChild(link);
     });
 
-    // PDF export event
+    // PDF export remains unchanged
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
       const opt = {
@@ -728,36 +728,32 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Replace images with clones that have no event listeners and wrap them in anchor tags
+      // Replace images with clones that have no event listeners and wrap in anchor tags
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
+        // Remove any inline click events by replacing with clone
         const a = document.createElement('a');
         a.href = img.src;
         a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        // Force Safari to open by handling the click event explicitly
-        a.addEventListener('click', function(e) {
-          e.preventDefault();
-          window.open(a.href, '_blank');
-        });
+        // Replace the old image with the new anchor-wrapped image
         oldImg.parentNode.replaceChild(a, oldImg);
         a.appendChild(img);
       });
       
-      // Build a complete HTML document using the current head and the cloned app content
+      // Build a full HTML document using the current head and the cloned app content
       const doctype = "<!DOCTYPE html>";
       const headHTML = document.querySelector('head').outerHTML;
       const bodyHTML = `<body class="bg-gray-100 text-gray-800">${appClone.outerHTML}</body>`;
       const fullHTML = `${doctype}<html lang="en">${headHTML}${bodyHTML}</html>`;
       
       const blob = new Blob([fullHTML], { type: 'text/html' });
-      const aLink = document.createElement('a');
-      aLink.href = URL.createObjectURL(blob);
-      aLink.download = 'bathroom_renovation_checklist_static.html';
-      aLink.click();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'bathroom_renovation_checklist_static.html';
+      a.click();
     });
 
-    // Photo button event
+    // Photo button event – remains unchanged
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -800,8 +796,7 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
-              // Instead of custom window.open, our export version now wraps images in anchors.
-              // For the live version, we add an event to open the image.
+              // Instead of custom window.open, let the anchor wrapping handle it in static export.
               imgElement.addEventListener('click', () => {
                 window.open(imgElement.src, '_blank');
               });

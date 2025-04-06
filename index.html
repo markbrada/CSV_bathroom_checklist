@@ -9,7 +9,7 @@
   <!-- html2pdf.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <style>
-    /* Base styles for fixed textareas */
+    /* Base styling for fixed textareas */
     textarea.fixed-size {
       resize: none;
       overflow-y: auto;
@@ -30,7 +30,7 @@
       font-weight: bold;
       margin-left: 0.5rem;
     }
-    /* Photo container for overlay delete button */
+    /* Photo container styling for delete button overlay */
     .photo-container {
       position: relative;
       display: inline-block;
@@ -49,34 +49,42 @@
       cursor: pointer;
       padding: 0 0.25rem;
     }
-    /* PDF export CSS - applied when exporting */
+    /* PDF export CSS for neat, consistent formatting */
     .pdf-export {
       max-width: 8.5in;
       margin: 0;
       padding: 0.2rem;
+      font-family: Arial, sans-serif;
+      color: #000;
     }
-    /* Adjust fonts for PDF export consistently */
     .pdf-export h1 {
       font-size: 14px !important;
+      margin: 0.2rem 0;
     }
     .pdf-export h2 {
       font-size: 12px !important;
+      margin: 0.2rem 0;
     }
     .pdf-export p,
     .pdf-export li,
     .pdf-export span,
-    .pdf-export td,
-    .pdf-export th,
     .pdf-export label,
     .pdf-export input,
     .pdf-export textarea,
     .pdf-export button {
       font-size: 10px !important;
+      margin: 0.1rem 0;
+      line-height: 1.2;
     }
-    /* Table styling adjustments for PDF */
+    .pdf-export ul, .pdf-export ol {
+      margin: 0.2rem 0 0.2rem 1rem;
+      padding: 0;
+      list-style-position: inside;
+    }
     .pdf-export table {
       width: 100%;
       border-collapse: collapse;
+      margin: 0.2rem 0;
     }
     .pdf-export th, .pdf-export td {
       padding: 0.25rem;
@@ -135,13 +143,13 @@
           </div>
         </div>
 
-        <!-- Site Setup & Preliminaries Section -->
+        <!-- Site Setup & Preliminaries Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="siteSetup">
           <div class="flex items-center justify-between bg-yellow-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Site Setup &amp; Preliminaries</h2>
-            <span class="toggle-button" data-target="siteSetup" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="siteSetup" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Capture tasks and considerations for preparing the site.
             </p>
@@ -168,13 +176,13 @@
           </div>
         </div>
 
-        <!-- Demolition & Rubbish Removal Section -->
+        <!-- Demolition & Rubbish Removal Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="demolition">
           <div class="flex items-center justify-between bg-gray-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Demolition &amp; Rubbish Removal</h2>
-            <span class="toggle-button" data-target="demolition" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="demolition" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Log tasks related to removing the existing bathroom.
             </p>
@@ -199,13 +207,13 @@
           </div>
         </div>
 
-        <!-- Asbestos Section -->
+        <!-- Asbestos Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="asbestos">
           <div class="flex items-center justify-between bg-red-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Asbestos (Hazardous Materials)</h2>
-            <span class="toggle-button" data-target="asbestos" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="asbestos" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Note potential hazards and testing requirements.
             </p>
@@ -225,13 +233,13 @@
           </div>
         </div>
 
-        <!-- Carpentry & Structural Section -->
+        <!-- Carpentry & Structural Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="carpentry">
           <div class="flex items-center justify-between bg-green-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Carpentry &amp; Structural</h2>
-            <span class="toggle-button" data-target="carpentry" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="carpentry" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Identify required carpentry and structural works.
             </p>
@@ -251,13 +259,13 @@
           </div>
         </div>
 
-        <!-- Plumbing Section -->
+        <!-- Plumbing Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="plumbing">
           <div class="flex items-center justify-between bg-blue-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Plumbing</h2>
-            <span class="toggle-button" data-target="plumbing" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="plumbing" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Determine all plumbing requirements.
             </p>
@@ -277,13 +285,13 @@
           </div>
         </div>
 
-        <!-- Electrical Section -->
+        <!-- Electrical Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="electrical">
           <div class="flex items-center justify-between bg-orange-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Electrical</h2>
-            <span class="toggle-button" data-target="electrical" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="electrical" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Determine all electrical requirements.
             </p>
@@ -303,13 +311,13 @@
           </div>
         </div>
 
-        <!-- Waterproofing Section -->
+        <!-- Waterproofing Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="waterproofing">
           <div class="flex items-center justify-between bg-teal-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Waterproofing</h2>
-            <span class="toggle-button" data-target="waterproofing" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="waterproofing" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Outline the waterproofing requirements.
             </p>
@@ -329,13 +337,13 @@
           </div>
         </div>
 
-        <!-- Tiling Section -->
+        <!-- Tiling Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="tiling">
           <div class="flex items-center justify-between bg-purple-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Tiling</h2>
-            <span class="toggle-button" data-target="tiling" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="tiling" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Record all tiling requirements.
             </p>
@@ -355,13 +363,13 @@
           </div>
         </div>
 
-        <!-- Painting & Finishes Section -->
+        <!-- Painting & Finishes Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="painting">
           <div class="flex items-center justify-between bg-pink-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Painting &amp; Finishes</h2>
-            <span class="toggle-button" data-target="painting" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="painting" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Record any painting or finishing requirements.
             </p>
@@ -381,13 +389,13 @@
           </div>
         </div>
 
-        <!-- Glazing & Fixtures Section -->
+        <!-- Glazing & Fixtures Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="glazing">
           <div class="flex items-center justify-between bg-indigo-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Glazing &amp; Fixtures</h2>
-            <span class="toggle-button" data-target="glazing" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="glazing" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Record the glazing and fixture requirements.
             </p>
@@ -407,13 +415,13 @@
           </div>
         </div>
 
-        <!-- Final Fit-Off & Accessories Section -->
+        <!-- Final Fit-Off & Accessories Section (open by default) -->
         <div class="mb-8 bg-white shadow rounded" data-section="finalFitOff">
           <div class="flex items-center justify-between bg-lime-100 px-4 py-2 border-b border-gray-300">
             <h2 class="text-xl font-bold">Final Fit-Off &amp; Accessories</h2>
-            <span class="toggle-button" data-target="finalFitOff" role="button" tabindex="0" aria-expanded="false">►</span>
+            <span class="toggle-button" data-target="finalFitOff" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
-          <div class="section-content px-4 py-2 hidden">
+          <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Record finishing touches and accessory installations.
             </p>
@@ -581,10 +589,13 @@
                   `<html>
                     <head>
                       <title>Photo - ${taskName}</title>
-                      <style>body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#000; }</style>
+                      <style>
+                        body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#000; }
+                        img { max-width:100%; max-height:100%; }
+                      </style>
                     </head>
                     <body>
-                      <img src="${imgElement.src}" style="max-width:100%; max-height:100%;" alt="Photo for ${taskName}">
+                      <img src="${imgElement.src}" alt="Photo for ${taskName}">
                     </body>
                   </html>`
                 );
@@ -595,6 +606,10 @@
               deleteButton.title = "Delete Photo";
               deleteButton.addEventListener('click', () => {
                 imgContainer.remove();
+                // If no images remain in this group, remove the entire photo group container.
+                if (groupDiv.querySelectorAll('img').length === 0) {
+                  groupDiv.remove();
+                }
               });
               const caption = document.createElement('div');
               caption.className = "text-xs";

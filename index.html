@@ -14,7 +14,7 @@
       resize: none;
       overflow-y: auto;
     }
-    /* Center the unit dropdown vertically */
+    /* Center the unit dropdown vertically & reduce its text size */
     .unit-select {
       position: absolute;
       right: 0;
@@ -22,6 +22,7 @@
       transform: translateY(-50%);
       width: 100%;
       text-align-last: center;
+      font-size: 10.5px !important;
     }
     /* Toggle button styling */
     .toggle-button {
@@ -48,6 +49,17 @@
       font-weight: bold;
       cursor: pointer;
       padding: 0 0.25rem;
+    }
+    /* Section header styling: make them small and neat */
+    .section-header {
+      font-size: 10.5px;
+      padding: 0.2rem 0.5rem;
+    }
+    /* Table headings: set to same size as section header */
+    table th {
+      font-size: 10.5px !important;
+      font-weight: bold;
+      padding: 0.2rem 0.5rem;
     }
     /* PDF export CSS for neat, consistent formatting */
     .pdf-export {
@@ -89,11 +101,13 @@
     .pdf-export th, .pdf-export td {
       padding: 0.15rem !important;
       border: 1px solid #ccc;
+      font-size: 10.5px !important;
     }
-    /* Make section header (the colored bar) slightly bigger than the surrounding text, but not too bulky */
-    .section-header {
-      font-size: 10.5px;
-      padding: 0.2rem 0.5rem;
+    /* Photo container header text styling */
+    .photo-header {
+      font-size: 10.5px !important;
+      font-weight: bold;
+      margin-bottom: 0.2rem;
     }
   </style>
 </head>
@@ -107,7 +121,7 @@
     </header>
     <div id="app">
       <form id="checklistForm">
-        <!-- Client & Project Details Section (no examples needed) -->
+        <!-- Client & Project Details Section (no examples) -->
         <div class="mb-8 bg-white shadow rounded" data-section="clientDetails">
           <div class="flex items-center justify-between bg-indigo-100 px-4 py-2 border-b border-gray-300 section-header">
             <h2 class="text-xl font-bold">Client &amp; Project Details</h2>
@@ -169,11 +183,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -202,11 +216,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -233,11 +247,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -270,11 +284,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -310,11 +324,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -349,11 +363,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -382,11 +396,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -418,11 +432,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -452,11 +466,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -484,11 +498,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -518,11 +532,11 @@
             <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/4">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Quantity</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/8">Actions</th>
+                  <th>Task</th>
+                  <th>Description</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
@@ -531,7 +545,7 @@
           </div>
         </div>
 
-        <!-- Client & Access Notes Section (free form) -->
+        <!-- Client & Access Notes Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="clientNotes">
           <div class="flex items-center justify-between bg-gray-50 px-4 py-2 border-b border-gray-300 section-header">
             <h2 class="text-xl font-bold">Client &amp; Access Notes</h2>
@@ -661,8 +675,9 @@
                 groupDiv = document.createElement('div');
                 groupDiv.setAttribute('data-task', taskName);
                 groupDiv.className = "task-photo-group mt-2 p-2 border rounded bg-gray-50";
+                // Add a photo header with reduced font size.
                 const header = document.createElement('div');
-                header.className = "font-bold mb-1";
+                header.className = "photo-header";
                 header.innerText = taskName + " photos";
                 groupDiv.appendChild(header);
                 photoGroupsContainer.appendChild(groupDiv);

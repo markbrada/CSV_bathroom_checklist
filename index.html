@@ -30,7 +30,7 @@
       font-weight: bold;
       margin-left: 0.5rem;
     }
-    /* Photo container for delete button overlay */
+    /* Photo container styling */
     .photo-container {
       position: relative;
       display: inline-block;
@@ -51,7 +51,7 @@
     }
     /* Styling for static fields in exported HTML */
     .static-field {
-      border: 1px solid #d1d5db;
+      border: 1px solid #d1d5db; /* Tailwind gray-300 */
       padding: 0.5rem;
       background: #f9fafb;
     }
@@ -685,25 +685,64 @@
     });
 
     // Export as HTML event – creates a static version of the current page
-    document.getElementById('exportHTML').addEventListener('click', () => {
+    document.getElementById('exportHTML').addEventListener('click', async () => {
       // Clone the entire app
       const appClone = document.getElementById('app').cloneNode(true);
       
       // Remove export buttons from the clone
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Replace all input, textarea, and select elements with static divs showing their current values.
-      appClone.querySelectorAll('input, textarea, select').forEach(el => {
+      // Process all file inputs asynchronously (for PDFs)
+      const fileInputs = appClone.querySelectorAll('input[type="file"]');
+      const promises = [];
+      fileInputs.forEach(input => {
+        const promise = new Promise((resolve) => {
+          if (input.files && input.files.length > 0) {
+            let linksHTML = "";
+            let filePromises = [];
+            for (let i = 0; i < input.files.length; i++) {
+              const file = input.files[i];
+              const frPromise = new Promise((res, rej) => {
+                const reader = new FileReader();
+                reader.onload = (evt) => { res({ name: file.name, data: evt.target.result }); };
+                reader.onerror = rej;
+                reader.readAsDataURL(file);
+              });
+              filePromises.push(frPromise);
+            }
+            Promise.all(filePromises).then(results => {
+              results.forEach(result => {
+                linksHTML += `<a href="${result.data}" target="_blank">${result.name}</a><br>`;
+              });
+              const staticDiv = document.createElement('div');
+              staticDiv.className = "static-field";
+              staticDiv.innerHTML = linksHTML;
+              input.parentNode.replaceChild(staticDiv, input);
+              resolve();
+            }).catch(() => {
+              const staticDiv = document.createElement('div');
+              staticDiv.className = "static-field";
+              staticDiv.textContent = "No files attached";
+              input.parentNode.replaceChild(staticDiv, input);
+              resolve();
+            });
+          } else {
+            const staticDiv = document.createElement('div');
+            staticDiv.className = "static-field";
+            staticDiv.textContent = "No files attached";
+            input.parentNode.replaceChild(staticDiv, input);
+            resolve();
+          }
+        });
+        promises.push(promise);
+      });
+      await Promise.all(promises);
+      
+      // Replace all other input, textarea, and select elements with static divs
+      appClone.querySelectorAll('input:not([type="file"]), textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
-        // Special handling for file inputs: show file names if available
-        if (el.type === "file") {
-          let names = "";
-          for (let i = 0; i < el.files.length; i++) {
-            names += el.files[i].name + (i < el.files.length - 1 ? ", " : "");
-          }
-          staticEl.textContent = names;
-        } else if (el.tagName.toLowerCase() === 'select') {
+        if (el.tagName.toLowerCase() === 'select') {
           staticEl.textContent = el.options[el.selectedIndex].text;
         } else {
           staticEl.textContent = el.value;
@@ -711,16 +750,21 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap all images in an anchor tag so they open in a new tab when clicked.
-      appClone.querySelectorAll('img').forEach(img => {
-        if (img.parentNode.tagName.toLowerCase() !== 'a') {
+      // Wrap all images in anchor tags so they open in a new tab
+      const imgs = appClone.querySelectorAll('img');
+      imgs.forEach(img => {
+        if (img.parentElement.tagName.toLowerCase() !== 'a') {
           const a = document.createElement('a');
           a.href = img.src;
           a.target = "_blank";
-          img.parentNode.insertBefore(a, img);
-          a.appendChild(img);
+          // Replace the image with a clone wrapped in the anchor for robustness.
+          a.appendChild(img.cloneNode(true));
+          img.replaceWith(a);
         }
       });
+      
+      // Remove any remaining interactive buttons
+      appClone.querySelectorAll('button').forEach(btn => btn.remove());
       
       // Construct a complete HTML document using the same head section
       const doctype = "<!DOCTYPE html>";

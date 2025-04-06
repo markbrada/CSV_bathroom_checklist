@@ -9,28 +9,7 @@
   <!-- html2pdf.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <style>
-      /* PDF export adjustments */
-  .pdf-export {
-    font-size: 10px;       /* smaller overall font size */
-    max-width: 8.5in;      /* constrain width to letter size */
-    margin: 0;
-    padding: 0.2rem;
-  }
-  .pdf-export h1 {
-    font-size: 16px;
-  }
-  .pdf-export h2 {
-    font-size: 12px;
-  }
-  .pdf-export table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .pdf-export th, .pdf-export td {
-    padding: 0.25rem;
-    font-size: 10px;
-  }
-    /* Fixed textareas for consistent appearance */
+    /* Base styles for fixed textareas */
     textarea.fixed-size {
       resize: none;
       overflow-y: auto;
@@ -51,7 +30,7 @@
       font-weight: bold;
       margin-left: 0.5rem;
     }
-    /* Photo container styling for delete button overlay */
+    /* Photo container for overlay delete button */
     .photo-container {
       position: relative;
       display: inline-block;
@@ -70,14 +49,38 @@
       cursor: pointer;
       padding: 0 0.25rem;
     }
-    /* PDF export adjustments */
+    /* PDF export CSS - applied when exporting */
     .pdf-export {
-      font-size: 10px;
-      padding: 0.5rem;
       max-width: 8.5in;
+      margin: 0;
+      padding: 0.2rem;
     }
-    .pdf-export .container {
-      padding: 0.5rem;
+    /* Adjust fonts for PDF export consistently */
+    .pdf-export h1 {
+      font-size: 14px !important;
+    }
+    .pdf-export h2 {
+      font-size: 12px !important;
+    }
+    .pdf-export p,
+    .pdf-export li,
+    .pdf-export span,
+    .pdf-export td,
+    .pdf-export th,
+    .pdf-export label,
+    .pdf-export input,
+    .pdf-export textarea,
+    .pdf-export button {
+      font-size: 10px !important;
+    }
+    /* Table styling adjustments for PDF */
+    .pdf-export table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .pdf-export th, .pdf-export td {
+      padding: 0.25rem;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -629,26 +632,22 @@
       }
     });
 
-    // PDF export event.
-document.getElementById('exportPDF').addEventListener('click', () => {
-  const appElement = document.getElementById('app');
-  // Apply the export-specific CSS
-  appElement.classList.add('pdf-export');
-
-  const opt = {
-    margin: 0.25, // small margin for more content per page
-    filename: 'bathroom_renovation_checklist.pdf',
-    image: { type: 'jpeg', quality: 1.0 },
-    html2canvas: { scale: 3 }, // higher scale for higher resolution
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-  };
-
-  html2pdf().set(opt).from(appElement).save().then(() => {
-    // Remove the export CSS class after saving
-    appElement.classList.remove('pdf-export');
-  });
-});
+    // PDF export event: apply export styles and higher scale for resolution.
+    document.getElementById('exportPDF').addEventListener('click', () => {
+      const appElement = document.getElementById('app');
+      appElement.classList.add('pdf-export');
+      const opt = {
+        margin: 0.25,
+        filename: 'bathroom_renovation_checklist.pdf',
+        image: { type: 'jpeg', quality: 1.0 },
+        html2canvas: { scale: 3 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+      html2pdf().set(opt).from(appElement).save().then(() => {
+        appElement.classList.remove('pdf-export');
+      });
+    });
   </script>
 </body>
 </html>

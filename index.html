@@ -734,7 +734,7 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap images in anchor tags with an inline onclick that opens a new window and calls document.close()
+      // Wrap images in anchor tags with inline onclick to open photo in new window
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
         const a = document.createElement('a');
@@ -742,7 +742,7 @@
         a.target = "_blank";
         a.onclick = function(ev) {
           ev.preventDefault();
-          const newWindow = window.open('', '_blank');
+          const newWindow = window.open("about:blank", "_blank");
           newWindow.document.write(
             `<html>
               <head>
@@ -772,7 +772,7 @@
       aDownload.click();
     });
 
-    // Photo button event (online version)
+    // Photo button event for the online version
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -816,7 +816,7 @@
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
               imgElement.addEventListener('click', () => {
-                const newWindow = window.open('', '_blank');
+                const newWindow = window.open("about:blank", "_blank");
                 newWindow.document.write(
                   `<html>
                     <head>

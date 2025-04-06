@@ -559,7 +559,6 @@
         <button id="exportPDF" class="bg-purple-500 text-white px-4 py-2 rounded">Export PDF</button>
         <button id="exportHTML" class="bg-blue-500 text-white px-4 py-2 rounded">Export HTML</button>
       </div>
-      <div class="mt-4 text-right font-bold">Overall Total: $<span id="overallTotal">0.00</span></div>
     </div>
   </div>
 
@@ -693,11 +692,18 @@
       // Remove export buttons from the clone
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Replace all input, textarea, and select elements with static divs showing their current values
+      // Replace all input, textarea, and select elements with static divs showing their current values.
       appClone.querySelectorAll('input, textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
-        if (el.tagName.toLowerCase() === 'select') {
+        // Special handling for file inputs: show file names if available
+        if (el.type === "file") {
+          let names = "";
+          for (let i = 0; i < el.files.length; i++) {
+            names += el.files[i].name + (i < el.files.length - 1 ? ", " : "");
+          }
+          staticEl.textContent = names;
+        } else if (el.tagName.toLowerCase() === 'select') {
           staticEl.textContent = el.options[el.selectedIndex].text;
         } else {
           staticEl.textContent = el.value;
@@ -705,9 +711,15 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Remove interactive buttons (delete row, add row, toggle buttons)
-      appClone.querySelectorAll('button').forEach(btn => {
-        btn.remove();
+      // Wrap all images in an anchor tag so they open in a new tab when clicked.
+      appClone.querySelectorAll('img').forEach(img => {
+        if (img.parentNode.tagName.toLowerCase() !== 'a') {
+          const a = document.createElement('a');
+          a.href = img.src;
+          a.target = "_blank";
+          img.parentNode.insertBefore(a, img);
+          a.appendChild(img);
+        }
       });
       
       // Construct a complete HTML document using the same head section
@@ -724,7 +736,7 @@
       a.click();
     });
 
-    // Photo button event with delete photo option remains unchanged
+    // Photo button event with delete photo option
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {

@@ -597,7 +597,7 @@
   </template>
 
   <script>
-    // Update PDF file inputs so that when files are attached, the file names are stored and the select is updated.
+    // --- PDF File Handling ---
     const otReportInput = document.getElementById('otReportAttachment');
     otReportInput.addEventListener('change', (e) => {
       let names = [];
@@ -626,7 +626,6 @@
         document.getElementById('drawingsAttachmentContainer').classList.remove('hidden');
       }
     });
-    // Also update select dataset when changed manually.
     const otReportSelect = document.getElementById('otReportAvailable');
     otReportSelect.addEventListener('change', (e) => {
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
@@ -636,7 +635,7 @@
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
     });
 
-    // Core function to add rows.
+    // --- Core function to add rows ---
     const addRow = (sectionName, defaultData) => {
       const sectionDiv = document.querySelector(`[data-section="${sectionName}"]`);
       const tbody = sectionDiv.querySelector('.section-body');
@@ -648,7 +647,7 @@
       tbody.appendChild(template);
     };
 
-    // Event listeners for delete and toggle buttons.
+    // --- Event Listeners ---
     document.addEventListener('click', (e) => {
       if (e.target && e.target.classList.contains('delete-row')) {
         const row = e.target.closest('.row');
@@ -676,7 +675,7 @@
       });
     });
 
-    // CSV export event remains unchanged.
+    // --- CSV Export ---
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
@@ -706,7 +705,7 @@
       document.body.removeChild(link);
     });
 
-    // PDF export event remains unchanged.
+    // --- PDF Export ---
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
       const opt = {
@@ -719,14 +718,14 @@
       html2pdf().set(opt).from(element).save();
     });
 
-    // Export HTML event – converts page into a static, non-editable HTML file.
+    // --- Export HTML ---
     document.getElementById('exportHTML').addEventListener('click', () => {
       const appClone = document.getElementById('app').cloneNode(true);
       
       // Remove export buttons from the clone.
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Replace all inputs, textareas, and selects with static divs.
+      // Replace inputs, textareas, and selects with static divs.
       appClone.querySelectorAll('input, textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
@@ -740,13 +739,17 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap images in anchor tags so they open in a new tab.
+      // Wrap images in anchor tags with a click event to open in new tab.
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
         const anchor = document.createElement('a');
         anchor.href = img.src;
         anchor.target = "_blank";
-        // Replace the old image with the anchor-wrapped image.
+        // Attach click event to ensure compatibility (especially in Safari).
+        anchor.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.open(img.src, '_blank');
+        });
         oldImg.parentNode.replaceChild(anchor, oldImg);
         anchor.appendChild(img);
       });
@@ -763,7 +766,7 @@
       a.click();
     });
 
-    // Photo button event – when a photo is added, wrap it in an anchor so that clicking opens it.
+    // --- Photo Button Event ---
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -806,10 +809,14 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
-              // Wrap the image in an anchor tag so that clicking it opens the full-sized image.
+              // Wrap image in anchor tag with explicit click event.
               const anchor = document.createElement('a');
               anchor.href = imgSrc;
               anchor.target = "_blank";
+              anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(imgSrc, '_blank');
+              });
               anchor.appendChild(imgElement);
               const deleteButton = document.createElement('button');
               deleteButton.innerText = '×';
@@ -834,7 +841,7 @@
       }
     });
 
-    // OT Report attachment toggle.
+    // --- Attachment Toggles ---
     document.getElementById('otReportAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('otReportAttachmentContainer');
       if (e.target.value === 'yes') {
@@ -843,7 +850,6 @@
         container.classList.add('hidden');
       }
     });
-    // Drawings attachment toggle.
     document.getElementById('drawingsAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('drawingsAttachmentContainer');
       if (e.target.value === 'yes') {

@@ -728,23 +728,18 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Replace images with clones that have no event listeners and wrap them in anchor tags
+      // Replace images with clones wrapped in anchor tags (without custom click events)
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
         const a = document.createElement('a');
         a.href = img.src;
         a.target = "_blank";
         a.rel = "noopener noreferrer";
-        // Force Safari to open by handling the click event explicitly
-        a.addEventListener('click', function(e) {
-          e.preventDefault();
-          window.open(a.href, '_blank');
-        });
         oldImg.parentNode.replaceChild(a, oldImg);
         a.appendChild(img);
       });
       
-      // Build a complete HTML document using the current head and the cloned app content
+      // Build a full HTML document using the current head and the cloned app content
       const doctype = "<!DOCTYPE html>";
       const headHTML = document.querySelector('head').outerHTML;
       const bodyHTML = `<body class="bg-gray-100 text-gray-800">${appClone.outerHTML}</body>`;
@@ -800,8 +795,6 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
-              // Instead of custom window.open, our export version now wraps images in anchors.
-              // For the live version, we add an event to open the image.
               imgElement.addEventListener('click', () => {
                 window.open(imgElement.src, '_blank');
               });

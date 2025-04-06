@@ -614,7 +614,7 @@
       }
       e.target.dataset.filenames = names.join(", ");
     });
-    // Update dataset for select elements when changed
+    // Store selected value for PDF availability
     const otReportSelect = document.getElementById('otReportAvailable');
     otReportSelect.addEventListener('change', (e) => {
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
@@ -664,7 +664,7 @@
       });
     });
 
-    // CSV export event (unchanged)
+    // CSV export event
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
@@ -694,7 +694,7 @@
       document.body.removeChild(link);
     });
 
-    // PDF export event (unchanged)
+    // PDF export event
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
       const opt = {
@@ -708,17 +708,13 @@
     });
 
     // Export HTML event – converts page into a static, non-editable HTML file
-    document.getElementById('exportHTML').addEventListener('click', async () => {
-      // Ensure select elements' dataset is updated
-      otReportSelect.dataset.selected = otReportSelect.value === 'yes' ? 'Yes' : 'No';
-      drawingsSelect.dataset.selected = drawingsSelect.value === 'yes' ? 'Yes' : 'No';
-      
+    document.getElementById('exportHTML').addEventListener('click', () => {
       const appClone = document.getElementById('app').cloneNode(true);
       
       // Remove export buttons from the clone
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Replace all input, textarea, and select elements with static divs
+      // Replace all inputs, textareas, and selects with static divs
       appClone.querySelectorAll('input, textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
@@ -732,48 +728,36 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Process images: ensure every image's src is a data URL
-      const images = Array.from(appClone.querySelectorAll('img'));
-      await Promise.all(images.map(async (oldImg) => {
-        let src = oldImg.src;
-        if(src.startsWith("blob:")){
-          try {
-            const response = await fetch(src);
-            const blob = await response.blob();
-            src = await new Promise(resolve => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result);
-              reader.readAsDataURL(blob);
-            });
-          } catch(e) {
-            console.error("Error converting blob to data URL:", e);
-          }
-        }
-        // Create a new image clone with the updated src
-        const imgClone = oldImg.cloneNode(true);
-        imgClone.src = src;
-        // Remove any click events by replacing with a clone
-        const anchor = document.createElement('a');
-        anchor.href = src;
-        anchor.target = "_blank";
-        oldImg.parentNode.replaceChild(anchor, oldImg);
-        anchor.appendChild(imgClone);
-      }));
+      // Replace images with clones that have no event listeners and wrap them in anchor tags
+      appClone.querySelectorAll('img').forEach(oldImg => {
+        const img = oldImg.cloneNode(true);
+        const a = document.createElement('a');
+        a.href = img.src;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        // Force Safari to open by handling the click event explicitly
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.open(a.href, '_blank');
+        });
+        oldImg.parentNode.replaceChild(a, oldImg);
+        a.appendChild(img);
+      });
       
-      // Build full HTML document
+      // Build a complete HTML document using the current head and the cloned app content
       const doctype = "<!DOCTYPE html>";
       const headHTML = document.querySelector('head').outerHTML;
       const bodyHTML = `<body class="bg-gray-100 text-gray-800">${appClone.outerHTML}</body>`;
       const fullHTML = `${doctype}<html lang="en">${headHTML}${bodyHTML}</html>`;
       
       const blob = new Blob([fullHTML], { type: 'text/html' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'bathroom_renovation_checklist_static.html';
-      a.click();
+      const aLink = document.createElement('a');
+      aLink.href = URL.createObjectURL(blob);
+      aLink.download = 'bathroom_renovation_checklist_static.html';
+      aLink.click();
     });
 
-    // Photo button event – when adding photos
+    // Photo button event
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -816,7 +800,8 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
-              // In the live version, clicking the image opens it in a new tab.
+              // Instead of custom window.open, our export version now wraps images in anchors.
+              // For the live version, we add an event to open the image.
               imgElement.addEventListener('click', () => {
                 window.open(imgElement.src, '_blank');
               });

@@ -614,7 +614,7 @@
       }
       e.target.dataset.filenames = names.join(", ");
     });
-    // Store selected value for PDF availability
+    // Update selected value for PDF availability
     const otReportSelect = document.getElementById('otReportAvailable');
     otReportSelect.addEventListener('change', (e) => {
       e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
@@ -709,6 +709,12 @@
 
     // Export HTML event – creates a static version of the current page
     document.getElementById('exportHTML').addEventListener('click', () => {
+      // Before cloning, update PDF availability selects based on file inputs.
+      const otReportFileInput = document.getElementById('otReportAttachment');
+      const drawingsFileInput = document.getElementById('drawingsAttachment');
+      document.getElementById('otReportAvailable').dataset.selected = (otReportFileInput.dataset.filenames && otReportFileInput.dataset.filenames !== "") ? "Yes" : "No";
+      document.getElementById('drawingsAvailable').dataset.selected = (drawingsFileInput.dataset.filenames && drawingsFileInput.dataset.filenames !== "") ? "Yes" : "No";
+      
       const appClone = document.getElementById('app').cloneNode(true);
       
       // Remove export buttons from the clone
@@ -728,12 +734,28 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap images in anchor tags so they open in a new tab
+      // Wrap images in anchor tags with an inline onclick that opens a new window and calls document.close()
       appClone.querySelectorAll('img').forEach(oldImg => {
         const img = oldImg.cloneNode(true);
         const a = document.createElement('a');
-        a.href = img.src;
+        a.href = "#";
         a.target = "_blank";
+        a.onclick = function(ev) {
+          ev.preventDefault();
+          const newWindow = window.open('', '_blank');
+          newWindow.document.write(
+            `<html>
+              <head>
+                <title>Photo</title>
+                <style>body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#000; }</style>
+              </head>
+              <body>
+                <img src="${img.src}" style="max-width:100%; max-height:100%;" alt="Photo" />
+              </body>
+            </html>`
+          );
+          newWindow.document.close();
+        };
         oldImg.parentNode.replaceChild(a, oldImg);
         a.appendChild(img);
       });
@@ -744,13 +766,13 @@
       const fullHTML = `${doctype}<html lang="en">${headHTML}${bodyHTML}</html>`;
       
       const blob = new Blob([fullHTML], { type: 'text/html' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'bathroom_renovation_checklist_static.html';
-      a.click();
+      const aDownload = document.createElement('a');
+      aDownload.href = URL.createObjectURL(blob);
+      aDownload.download = 'bathroom_renovation_checklist_static.html';
+      aDownload.click();
     });
 
-    // Photo button event
+    // Photo button event (online version)
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {

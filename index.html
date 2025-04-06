@@ -30,7 +30,7 @@
       font-weight: bold;
       margin-left: 0.5rem;
     }
-    /* Photo container styling */
+    /* Photo container for delete button overlay */
     .photo-container {
       position: relative;
       display: inline-block;
@@ -51,7 +51,7 @@
     }
     /* Styling for static fields in exported HTML */
     .static-field {
-      border: 1px solid #d1d5db; /* Tailwind gray-300 */
+      border: 1px solid #d1d5db;
       padding: 0.5rem;
       background: #f9fafb;
     }
@@ -597,7 +597,34 @@
   </template>
 
   <script>
-    // ---- Core Functions ----
+    // Store PDF file names when attached
+    const otReportInput = document.getElementById('otReportAttachment');
+    otReportInput.addEventListener('change', (e) => {
+      let names = [];
+      for (let i = 0; i < e.target.files.length; i++) {
+        names.push(e.target.files[i].name);
+      }
+      e.target.dataset.filenames = names.join(", ");
+    });
+    const drawingsInput = document.getElementById('drawingsAttachment');
+    drawingsInput.addEventListener('change', (e) => {
+      let names = [];
+      for (let i = 0; i < e.target.files.length; i++) {
+        names.push(e.target.files[i].name);
+      }
+      e.target.dataset.filenames = names.join(", ");
+    });
+    // Store selected value for PDF availability
+    const otReportSelect = document.getElementById('otReportAvailable');
+    otReportSelect.addEventListener('change', (e) => {
+      e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
+    });
+    const drawingsSelect = document.getElementById('drawingsAvailable');
+    drawingsSelect.addEventListener('change', (e) => {
+      e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
+    });
+
+    // Core function to add rows
     const addRow = (sectionName, defaultData) => {
       const sectionDiv = document.querySelector(`[data-section="${sectionName}"]`);
       const tbody = sectionDiv.querySelector('.section-body');
@@ -609,20 +636,17 @@
       tbody.appendChild(template);
     };
 
-    // ---- Event Listeners ----
+    // Event listeners for delete and toggle buttons
     document.addEventListener('click', (e) => {
-      // Delete row event
       if (e.target && e.target.classList.contains('delete-row')) {
         const row = e.target.closest('.row');
         row.remove();
       }
-      // Toggle section event
       if (e.target && e.target.classList.contains('toggle-button')) {
         const targetSection = e.target.getAttribute('data-target');
         const sectionDiv = document.querySelector(`[data-section="${targetSection}"]`);
         const content = sectionDiv.querySelector('.section-content');
-        const isHidden = content.classList.contains('hidden');
-        if (isHidden) {
+        if (content.classList.contains('hidden')) {
           content.classList.remove('hidden');
           e.target.innerText = "▼";
           e.target.setAttribute('aria-expanded', "true");
@@ -633,7 +657,6 @@
         }
       }
     });
-
     document.querySelectorAll('.add-row').forEach(button => {
       button.addEventListener('click', () => {
         const sectionName = button.getAttribute('data-section');
@@ -641,7 +664,7 @@
       });
     });
 
-    // CSV export event
+    // CSV export remains unchanged
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
@@ -671,7 +694,7 @@
       document.body.removeChild(link);
     });
 
-    // PDF export event
+    // PDF export remains unchanged
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
       const opt = {
@@ -684,95 +707,45 @@
       html2pdf().set(opt).from(element).save();
     });
 
-    // Export as HTML event – creates a static version of the current page
-    document.getElementById('exportHTML').addEventListener('click', async () => {
-      // Clone the entire app
+    // Export HTML event – converts page into a static, non-editable HTML file
+    document.getElementById('exportHTML').addEventListener('click', () => {
       const appClone = document.getElementById('app').cloneNode(true);
       
       // Remove export buttons from the clone
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
-      // Process all file inputs asynchronously (for PDFs)
-      const fileInputs = appClone.querySelectorAll('input[type="file"]');
-      const promises = [];
-      fileInputs.forEach(input => {
-        const promise = new Promise((resolve) => {
-          if (input.files && input.files.length > 0) {
-            let linksHTML = "";
-            let filePromises = [];
-            for (let i = 0; i < input.files.length; i++) {
-              const file = input.files[i];
-              const frPromise = new Promise((res, rej) => {
-                const reader = new FileReader();
-                reader.onload = (evt) => { res({ name: file.name, data: evt.target.result }); };
-                reader.onerror = rej;
-                reader.readAsDataURL(file);
-              });
-              filePromises.push(frPromise);
-            }
-            Promise.all(filePromises).then(results => {
-              results.forEach(result => {
-                linksHTML += `<a href="${result.data}" target="_blank">${result.name}</a><br>`;
-              });
-              const staticDiv = document.createElement('div');
-              staticDiv.className = "static-field";
-              staticDiv.innerHTML = linksHTML;
-              input.parentNode.replaceChild(staticDiv, input);
-              resolve();
-            }).catch(() => {
-              const staticDiv = document.createElement('div');
-              staticDiv.className = "static-field";
-              staticDiv.textContent = "No files attached";
-              input.parentNode.replaceChild(staticDiv, input);
-              resolve();
-            });
-          } else {
-            const staticDiv = document.createElement('div');
-            staticDiv.className = "static-field";
-            staticDiv.textContent = "No files attached";
-            input.parentNode.replaceChild(staticDiv, input);
-            resolve();
-          }
-        });
-        promises.push(promise);
-      });
-      await Promise.all(promises);
-      
-      // Replace all other input, textarea, and select elements with static divs
-      appClone.querySelectorAll('input:not([type="file"]), textarea, select').forEach(el => {
+      // Replace all inputs, textareas, and selects with static divs
+      appClone.querySelectorAll('input, textarea, select').forEach(el => {
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
-        if (el.tagName.toLowerCase() === 'select') {
-          staticEl.textContent = el.options[el.selectedIndex].text;
+        if (el.type === "file") {
+          staticEl.textContent = el.dataset.filenames ? el.dataset.filenames : "No files attached";
+        } else if (el.tagName.toLowerCase() === 'select') {
+          staticEl.textContent = el.dataset.selected ? el.dataset.selected : el.options[el.selectedIndex].text;
         } else {
           staticEl.textContent = el.value;
         }
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap all images in anchor tags so they open in a new tab
-      const imgs = appClone.querySelectorAll('img');
-      imgs.forEach(img => {
-        if (img.parentElement.tagName.toLowerCase() !== 'a') {
-          const a = document.createElement('a');
-          a.href = img.src;
-          a.target = "_blank";
-          // Replace the image with a clone wrapped in the anchor for robustness.
-          a.appendChild(img.cloneNode(true));
-          img.replaceWith(a);
-        }
+      // Replace images with clones that have no event listeners and wrap in anchor tags
+      appClone.querySelectorAll('img').forEach(oldImg => {
+        const img = oldImg.cloneNode(true);
+        // Remove any inline click events by replacing with clone
+        const a = document.createElement('a');
+        a.href = img.src;
+        a.target = "_blank";
+        // Replace the old image with the new anchor-wrapped image
+        oldImg.parentNode.replaceChild(a, oldImg);
+        a.appendChild(img);
       });
       
-      // Remove any remaining interactive buttons
-      appClone.querySelectorAll('button').forEach(btn => btn.remove());
-      
-      // Construct a complete HTML document using the same head section
+      // Build a full HTML document using the current head and the cloned app content
       const doctype = "<!DOCTYPE html>";
       const headHTML = document.querySelector('head').outerHTML;
       const bodyHTML = `<body class="bg-gray-100 text-gray-800">${appClone.outerHTML}</body>`;
       const fullHTML = `${doctype}<html lang="en">${headHTML}${bodyHTML}</html>`;
       
-      // Trigger download of the static HTML file
       const blob = new Blob([fullHTML], { type: 'text/html' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
@@ -780,7 +753,7 @@
       a.click();
     });
 
-    // Photo button event with delete photo option
+    // Photo button event – remains unchanged
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
@@ -823,21 +796,10 @@
               imgElement.src = imgSrc;
               imgElement.alt = "Photo for " + taskName;
               imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
+              // Instead of custom window.open, let the anchor wrapping handle it in static export.
               imgElement.addEventListener('click', () => {
-                const newWindow = window.open('', '_blank');
-                newWindow.document.write(
-                  `<html>
-                    <head>
-                      <title>Photo - ${taskName}</title>
-                      <style>body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#000; }</style>
-                    </head>
-                    <body>
-                      <img src="${imgElement.src}" style="max-width:100%; max-height:100%;" alt="Photo for ${taskName}">
-                    </body>
-                  </html>`
-                );
+                window.open(imgElement.src, '_blank');
               });
-              // Create delete button for photo
               const deleteButton = document.createElement('button');
               deleteButton.innerText = '×';
               deleteButton.className = "delete-photo";
@@ -870,7 +832,6 @@
         container.classList.add('hidden');
       }
     });
-
     // Drawings attachment toggle
     document.getElementById('drawingsAvailable').addEventListener('change', (e) => {
       const container = document.getElementById('drawingsAttachmentContainer');

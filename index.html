@@ -15,22 +15,13 @@
       overflow-y: auto;
     }
     /* Center the unit dropdown vertically */
-    .unit-select-container { /* Added a container for positioning */
-        position: relative;
-        height: 100%; /* Ensure container takes full cell height */
-    }
     .unit-select {
       position: absolute;
-      left: 0; /* Align left within the container */
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 100%; /* Take full width of container */
-      text-align: center; /* Center text */
-      text-align-last: center; /* Ensure center align for selected option */
-      -moz-text-align-last: center; /* Firefox specific */
-      padding: 0.5rem 0.25rem; /* Adjust padding as needed */
-      border: 1px solid transparent; /* Match input appearance */
-      background-color: inherit; /* Inherit background */
+      width: 100%;
+      text-align-last: center;
     }
     /* Toggle button styling */
     .toggle-button {
@@ -46,46 +37,23 @@
       margin-right: 0.5rem;
       margin-bottom: 0.5rem;
       text-align: center;
-      vertical-align: top; /* Align containers nicely */
     }
     .delete-photo {
       position: absolute;
-      top: -5px; /* Adjust for better placement */
-      right: -5px; /* Adjust for better placement */
+      top: 0;
+      right: 0;
       background: white;
-      border-radius: 50%;
-      border: 1px solid red;
+      border: none;
       color: red;
       font-weight: bold;
       cursor: pointer;
-      padding: 0 0.35rem;
-      line-height: 1;
-      width: 20px; /* Fixed size */
-      height: 20px; /* Fixed size */
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0 0.25rem;
     }
     /* Styling for static fields in exported HTML */
     .static-field {
-      border: 1px solid #d1d5db; /* gray-300 */
+      border: 1px solid #d1d5db;
       padding: 0.5rem;
-      background: #f9fafb; /* gray-50 */
-      min-height: 2.5em; /* Match input height */
-      display: block; /* Ensure it takes block space */
-      width: 100%;
-      white-space: pre-wrap; /* Preserve line breaks from textareas */
-      word-wrap: break-word; /* Wrap long text */
-      box-sizing: border-box; /* Include padding/border in width */
-    }
-    /* Ensure static fields in table cells align correctly */
-    td > .static-field {
-        min-height: 4em; /* Give more space for multiline content in cells */
-    }
-    /* Style static unit field */
-    .static-unit-field {
-        text-align: center;
-        font-weight: 500;
+      background: #f9fafb;
     }
   </style>
 </head>
@@ -99,11 +67,10 @@
     </header>
     <div id="app">
       <form id="checklistForm">
-        <!-- Client & Project Details Section -->
+        <!-- Client & Project Details Section (split into two columns) -->
         <div class="mb-8 bg-white shadow rounded" data-section="clientDetails">
           <div class="flex items-center justify-between bg-indigo-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Client & Project Details</h2>
-            <!-- Removed toggle for this section -->
+            <h2 class="text-xl font-bold">Client &amp; Project Details</h2>
           </div>
           <div class="section-content px-4 py-2">
             <div class="flex flex-col md:flex-row md:space-x-4">
@@ -111,45 +78,43 @@
               <div class="md:w-1/2 space-y-4">
                 <div>
                   <label for="clientName" class="block font-semibold">Client Name</label>
-                  <input type="text" id="clientName" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter client name">
+                  <input type="text" id="clientName" class="w-full border border-gray-300 p-2" placeholder="Enter client name">
                 </div>
                 <div>
                   <label for="clientAddress" class="block font-semibold">Client Address</label>
-                  <textarea id="clientAddress" class="w-full border border-gray-300 p-2 rounded" rows="3" placeholder="Enter client address"></textarea>
+                  <textarea id="clientAddress" class="w-full border border-gray-300 p-2" rows="3" placeholder="Enter client address"></textarea>
                 </div>
                 <div>
                   <label for="inspectedOn" class="block font-semibold">Inspected On</label>
-                  <input type="date" id="inspectedOn" class="w-full border border-gray-300 p-2 rounded">
+                  <input type="date" id="inspectedOn" class="w-full border border-gray-300 p-2">
                 </div>
                 <div>
                   <label for="csvInspector" class="block font-semibold">CSV Inspector</label>
-                  <input type="text" id="csvInspector" class="w-full border border-gray-300 p-2 rounded" placeholder="Enter inspector name">
+                  <input type="text" id="csvInspector" class="w-full border border-gray-300 p-2" placeholder="Enter inspector name">
                 </div>
               </div>
               <!-- RIGHT Column -->
               <div class="md:w-1/2 space-y-4">
                 <div>
                   <label for="otReportAvailable" class="block font-semibold">OT Report Available?</label>
-                  <select id="otReportAvailable" class="w-full border border-gray-300 p-2 rounded">
+                  <select id="otReportAvailable" class="w-full border border-gray-300 p-2">
                     <option value="no" selected>No</option>
                     <option value="yes">Yes</option>
                   </select>
                   <div id="otReportAttachmentContainer" class="mt-2 hidden">
                     <label class="block font-semibold">Attach OT Report(s) (PDF)</label>
-                    <input type="file" id="otReportAttachment" accept="application/pdf" class="w-full border border-gray-300 p-2 rounded" multiple>
-                    <div class="text-sm text-gray-500 mt-1" id="otReportFilenames"></div>
+                    <input type="file" id="otReportAttachment" accept="application/pdf" class="w-full border border-gray-300 p-2" multiple>
                   </div>
                 </div>
                 <div>
                   <label for="drawingsAvailable" class="block font-semibold">Drawings Available?</label>
-                  <select id="drawingsAvailable" class="w-full border border-gray-300 p-2 rounded">
+                  <select id="drawingsAvailable" class="w-full border border-gray-300 p-2">
                     <option value="no" selected>No</option>
                     <option value="yes">Yes</option>
                   </select>
                   <div id="drawingsAttachmentContainer" class="mt-2 hidden">
                     <label class="block font-semibold">Attach Drawings (PDF)</label>
-                    <input type="file" id="drawingsAttachment" accept="application/pdf" class="w-full border border-gray-300 p-2 rounded" multiple>
-                     <div class="text-sm text-gray-500 mt-1" id="drawingsFilenames"></div>
+                    <input type="file" id="drawingsAttachment" accept="application/pdf" class="w-full border border-gray-300 p-2" multiple>
                   </div>
                 </div>
               </div>
@@ -160,7 +125,7 @@
         <!-- Site Setup & Preliminaries Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="siteSetup">
           <div class="flex items-center justify-between bg-yellow-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Site Setup & Preliminaries</h2>
+            <h2 class="text-xl font-bold">Site Setup &amp; Preliminaries</h2>
             <span class="toggle-button" data-target="siteSetup" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
@@ -175,52 +140,52 @@
               <li>Are there access constraints (stairs, multi-storey, narrow doorways)?</li>
               <li>Are there any additional access costs (lift usage, parking permits, limited working hours)?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-             <div class="photo-groups mt-2"></div> <!-- Container for photos specific to this section -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="siteSetup">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="siteSetup">Add Task</button>
           </div>
         </div>
 
         <!-- Demolition & Rubbish Removal Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="demolition">
           <div class="flex items-center justify-between bg-gray-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Demolition & Rubbish Removal</h2>
+            <h2 class="text-xl font-bold">Demolition &amp; Rubbish Removal</h2>
             <span class="toggle-button" data-target="demolition" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-            <p class="mb-2 text-sm text-gray-700">Log tasks related to removing the existing bathroom.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+            <p class="mb-2 text-sm text-gray-700">
+              Log tasks related to removing the existing bathroom.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>What fixtures need removal? (toilet, bath, spa, vanity, shower, etc.)</li>
               <li>What fittings/accessories need removal? (mirror, towel rails, shower head, tapware)</li>
               <li>Strip wall tiles (including any plasterboard removal if needed)</li>
               <li>Strip floor tiles (jackhammer floor tiles and bedding)</li>
               <li>Rubbish disposal requirements (volume and type of debris)</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="demolition">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="demolition">Add Task</button>
           </div>
         </div>
 
@@ -231,37 +196,40 @@
             <span class="toggle-button" data-target="asbestos" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-             <p class="mb-2 text-sm text-gray-700">Determine the need for hazardous materials handling.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
-                <li>Is asbestos testing required for wall sheeting and flooring?</li>
-                <li>If required, is removal of asbestos wall linings needed?</li>
-                <li>If required, is removal of asbestos flooring needed?</li>
-             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <p class="mb-2 text-sm text-gray-700">
+              Determine the need for hazardous materials handling.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+              <li>Is asbestos testing required for wall sheeting and flooring?</li>
+              <li>If required, is removal of asbestos wall linings needed?</li>
+              <li>If required, is removal of asbestos flooring needed?</li>
+            </ul>
+            <table class="w-full table-fixed">
               <thead>
                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="asbestos">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="asbestos">Add Task</button>
           </div>
         </div>
 
         <!-- Carpentry & Structural Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="carpentry">
           <div class="flex items-center justify-between bg-green-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Carpentry & Structural</h2>
+            <h2 class="text-xl font-bold">Carpentry &amp; Structural</h2>
             <span class="toggle-button" data-target="carpentry" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-            <p class="mb-2 text-sm text-gray-700">Identify required carpentry and structural works.</p>
+            <p class="mb-2 text-sm text-gray-700">
+              Identify required carpentry and structural works.
+            </p>
             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Is subfloor repair or replacement required?</li>
               <li>Are wall framing modifications needed for niches or plumbing adjustments?</li>
@@ -273,20 +241,19 @@
               <li>Are studs for future grab rails required?</li>
               <li>Are additional structural modifications needed (re-framing or support additions)?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <table class="w-full table-fixed">
               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="carpentry">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="carpentry">Add Task</button>
           </div>
         </div>
 
@@ -297,7 +264,9 @@
             <span class="toggle-button" data-target="plumbing" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-            <p class="mb-2 text-sm text-gray-700">Determine all plumbing requirements.</p>
+            <p class="mb-2 text-sm text-gray-700">
+              Determine all plumbing requirements.
+            </p>
             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Does the sewer drain need relocation? (Specify length and new location)</li>
               <li>Do new water lines need to be run? (Specify total length and material)</li>
@@ -312,20 +281,19 @@
               <li>Is plumbing testing and certification required?</li>
               <li>Are accessible plumbing modifications (hand-held shower, lower basin) required?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
-               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+            <table class="w-full table-fixed">
+              <thead>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="plumbing">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="plumbing">Add Task</button>
           </div>
         </div>
 
@@ -336,34 +304,35 @@
             <span class="toggle-button" data-target="electrical" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-            <p class="mb-2 text-sm text-gray-700">Determine all electrical requirements.</p>
+            <p class="mb-2 text-sm text-gray-700">
+              Determine all electrical requirements.
+            </p>
             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
-                <li>Is new wiring required for ceiling lights and exhaust fans?</li>
-                <li>Are additional power outlets required?</li>
-                <li>Is a heat lamp or IXL unit required with proper wiring and switch?</li>
-                <li>Do light switches need relocation?</li>
-                <li>Are LED downlights required? (Specify quantity and location)</li>
-                <li>Is a new exhaust fan with ducting required?</li>
-                <li>Are power outlets to be fitted off post-paint?</li>
-                <li>Is an upgrade to the circuit breaker required?</li>
-                <li>Are bonding and grounding measures required?</li>
-                <li>Is a mirror light with sensor required?</li>
-                <li>Is certification of electrical safety required?</li>
+              <li>Is new wiring required for ceiling lights and exhaust fans?</li>
+              <li>Are additional power outlets required?</li>
+              <li>Is a heat lamp or IXL unit required with proper wiring and switch?</li>
+              <li>Do light switches need relocation?</li>
+              <li>Are LED downlights required? (Specify quantity and location)</li>
+              <li>Is a new exhaust fan with ducting required?</li>
+              <li>Are power outlets to be fitted off post-paint?</li>
+              <li>Is an upgrade to the circuit breaker required?</li>
+              <li>Are bonding and grounding measures required?</li>
+              <li>Is a mirror light with sensor required?</li>
+              <li>Is certification of electrical safety required?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <table class="w-full table-fixed">
               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="electrical">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="electrical">Add Task</button>
           </div>
         </div>
 
@@ -374,28 +343,29 @@
             <span class="toggle-button" data-target="waterproofing" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-             <p class="mb-2 text-sm text-gray-700">Outline the waterproofing requirements.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+            <p class="mb-2 text-sm text-gray-700">
+              Outline the waterproofing requirements.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Prep for waterproofing (apply primer and seal joints)</li>
               <li>Waterproofing of the shower area (specify number of coats)</li>
               <li>Should the entire floor be waterproofed?</li>
               <li>Seal all wet penetrations (around pipes and drains)</li>
               <li>Is a waterstop angle required at the bathroom doorway?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
-               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+            <table class="w-full table-fixed">
+              <thead>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-             <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="waterproofing">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="waterproofing">Add Task</button>
           </div>
         </div>
 
@@ -406,7 +376,9 @@
             <span class="toggle-button" data-target="tiling" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-            <p class="mb-2 text-sm text-gray-700">Record all tiling requirements.</p>
+            <p class="mb-2 text-sm text-gray-700">
+              Record all tiling requirements.
+            </p>
             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Is a floor screed required to create proper falls toward the drain?</li>
               <li>What is the floor tiling requirement? (tile type, size, area)</li>
@@ -417,32 +389,33 @@
               <li>Is aluminum tile trim required?</li>
               <li>Is cleaning and sealing of tiles required?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
-               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+            <table class="w-full table-fixed">
+              <thead>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="tiling">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="tiling">Add Task</button>
           </div>
         </div>
 
         <!-- Painting & Finishes Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="painting">
           <div class="flex items-center justify-between bg-pink-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Painting & Finishes</h2>
+            <h2 class="text-xl font-bold">Painting &amp; Finishes</h2>
             <span class="toggle-button" data-target="painting" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-            <p class="mb-2 text-sm text-gray-700">Determine painting and finishing requirements.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+            <p class="mb-2 text-sm text-gray-700">
+              Determine painting and finishing requirements.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Is ceiling painting required with mould‑resistant paint?</li>
               <li>Is painting above the tile line required?</li>
               <li>Is door and trim painting required (after hardware removal)?</li>
@@ -450,63 +423,65 @@
               <li>Is touch‑up of new woodwork required?</li>
               <li>Is a decorative finish (waterproof wallpaper or wall panels) required?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <table class="w-full table-fixed">
               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="painting">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="painting">Add Task</button>
           </div>
         </div>
 
         <!-- Glazing & Fixtures Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="glazing">
           <div class="flex items-center justify-between bg-indigo-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Glazing & Fixtures</h2>
+            <h2 class="text-xl font-bold">Glazing &amp; Fixtures</h2>
             <span class="toggle-button" data-target="glazing" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-             <p class="mb-2 text-sm text-gray-700">Determine the glazing and fixture requirements.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
-                <li>Is a frameless/toughened shower screen required? (Specify type)</li>
-                <li>Is a fixed mirror required above the vanity? (Specify size)</li>
-                <li>Are glass shelves or additional glazing elements required?</li>
-                <li>Is window glass replacement required with frosted safety glass?</li>
+            <p class="mb-2 text-sm text-gray-700">
+              Determine the glazing and fixture requirements.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+              <li>Is a frameless/toughened shower screen required? (Specify type)</li>
+              <li>Is a fixed mirror required above the vanity? (Specify size)</li>
+              <li>Are glass shelves or additional glazing elements required?</li>
+              <li>Is window glass replacement required with frosted safety glass?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
-               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+            <table class="w-full table-fixed">
+              <thead>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="glazing">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="glazing">Add Task</button>
           </div>
         </div>
 
         <!-- Final Fit-Off & Accessories Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="finalFitOff">
           <div class="flex items-center justify-between bg-lime-100 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Final Fit-Off & Accessories</h2>
+            <h2 class="text-xl font-bold">Final Fit-Off &amp; Accessories</h2>
             <span class="toggle-button" data-target="finalFitOff" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-             <p class="mb-2 text-sm text-gray-700">List finishing touches and hardware installations.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+            <p class="mb-2 text-sm text-gray-700">
+              List finishing touches and hardware installations.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Which bathroom accessories are required? (towel rails, hooks, etc.)</li>
               <li>Are grab rails required?</li>
               <li>Is a shower curtain rod required?</li>
@@ -514,32 +489,33 @@
               <li>Silicon caulking around fixtures and edges</li>
               <li>Is final cleaning and debris removal required?</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
-               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+            <table class="w-full table-fixed">
+              <thead>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="finalFitOff">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="finalFitOff">Add Task</button>
           </div>
         </div>
 
         <!-- Hidden/Unforeseen Work & Contingency Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="contingency">
           <div class="flex items-center justify-between bg-red-200 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Hidden/Unforeseen Work & Contingency</h2>
+            <h2 class="text-xl font-bold">Hidden/Unforeseen Work &amp; Contingency</h2>
             <span class="toggle-button" data-target="contingency" role="button" tabindex="0" aria-expanded="true">▼</span>
           </div>
           <div class="section-content px-4 py-2">
-             <p class="mb-2 text-sm text-gray-700">Note potential extra work or risks.</p>
-             <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
+            <p class="mb-2 text-sm text-gray-700">
+              Note potential extra work or risks.
+            </p>
+            <ul class="list-disc list-inside text-sm text-gray-600 mb-4">
               <li>Allowance for asbestos removal if discovered</li>
               <li>Allowance for subfloor repair</li>
               <li>Allowance for electrical upgrades (switchboard/RCD)</li>
@@ -547,43 +523,41 @@
               <li>Allowance for structural reinforcement (for heavy fixtures)</li>
               <li>Allowance for other unforeseen issues</li>
             </ul>
-            <table class="w-full table-fixed border-collapse border border-gray-300">
+            <table class="w-full table-fixed">
               <thead>
-                 <tr>
-                  <th class="px-2 py-1 border border-gray-300 w-1/6 bg-gray-100">Task</th>
-                  <th class="px-2 py-1 border border-gray-300 w-1/2 bg-gray-100">Description</th>
+                <tr>
+                  <th class="px-2 py-1 border border-gray-300 w-1/6">Task</th>
+                  <th class="px-2 py-1 border border-gray-300 w-1/2">Description</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Quantity</th>
                   <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-200">Unit</th>
-                  <th class="px-2 py-1 border border-gray-300 w-24 bg-gray-100">Actions</th>
+                  <th class="px-2 py-1 border border-gray-300 w-24">Actions</th>
                 </tr>
               </thead>
               <tbody class="section-body"></tbody>
             </table>
-            <div class="photo-groups mt-2"></div> <!-- Container for photos -->
-            <button type="button" class="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded add-row" data-section="contingency">Add Task</button>
+            <button type="button" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded add-row" data-section="contingency">Add Task</button>
           </div>
         </div>
 
         <!-- Client & Access Notes Section -->
         <div class="mb-8 bg-white shadow rounded" data-section="clientNotes">
           <div class="flex items-center justify-between bg-gray-50 px-4 py-2 border-b border-gray-300">
-            <h2 class="text-xl font-bold">Client & Access Notes</h2>
-            <!-- Removed toggle for this section -->
+            <h2 class="text-xl font-bold">Client &amp; Access Notes</h2>
           </div>
           <div class="section-content px-4 py-2">
             <p class="mb-2 text-sm text-gray-700">
               Record any client-specific instructions or site restrictions.
             </p>
-            <textarea class="w-full border border-gray-300 p-2 rounded fixed-size" id="clientNotes" rows="8" placeholder="Enter any client, access, or additional notes here..."></textarea>
+            <textarea class="w-full border border-gray-300 p-2 fixed-size" id="clientNotes" rows="8" placeholder="Enter any client, access, or additional notes here..."></textarea>
           </div>
         </div>
       </form>
 
       <!-- Export Buttons -->
       <div class="flex flex-col md:flex-row justify-end space-y-2 md:space-y-0 md:space-x-2 mt-4">
-        <button id="exportCSV" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Export CSV</button>
-        <button id="exportPDF" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Export PDF</button>
-        <button id="exportHTML" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Export HTML</button>
+        <button id="exportCSV" class="bg-green-500 text-white px-4 py-2 rounded">Export CSV</button>
+        <button id="exportPDF" class="bg-purple-500 text-white px-4 py-2 rounded">Export PDF</button>
+        <button id="exportHTML" class="bg-blue-500 text-white px-4 py-2 rounded">Export HTML</button>
       </div>
     </div>
   </div>
@@ -591,268 +565,125 @@
   <!-- Row Template for adding tasks -->
   <template id="rowTemplate">
     <tr class="row">
-      <td class="border border-gray-300 px-2 py-1 align-top">
-        <textarea class="w-full task fixed-size border border-gray-300 p-1 rounded" rows="3" placeholder="Task"></textarea>
+      <td class="border border-gray-300 px-2 py-1 w-1/6">
+        <textarea class="w-full task fixed-size" rows="2" placeholder="Task"></textarea>
       </td>
-      <td class="border border-gray-300 px-2 py-1 align-top">
-        <textarea class="w-full description fixed-size border border-gray-300 p-1 rounded" rows="3" placeholder="Description"></textarea>
+      <td class="border border-gray-300 px-2 py-1 w-1/2">
+        <textarea class="w-full description fixed-size" rows="2" placeholder="Description"></textarea>
       </td>
-      <td class="border border-gray-300 px-2 py-1 align-top bg-gray-200">
-        <input type="number" step="any" class="w-full quantity border border-gray-300 p-1 rounded text-center" placeholder="0" />
+      <td class="border border-gray-300 px-2 py-1 bg-gray-200 w-24">
+        <input type="number" step="any" class="w-full quantity" placeholder="0" />
       </td>
-      <td class="border border-gray-300 p-0 align-middle bg-gray-200"> <!-- Removed padding, adjusted alignment -->
-         <div class="unit-select-container"> <!-- Container for positioning -->
-            <select class="unit-select p-1 border-gray-300 rounded bg-transparent appearance-none">
-              <option value="LM">LM</option>
-              <option value="Sqm">Sqm</option>
-              <option value="ea">ea</option>
-              <option value="Hrs" selected>Hrs</option>
-            </select>
-         </div>
+      <td class="border border-gray-300 px-2 py-1 relative bg-gray-200 w-24">
+        <select class="unit-select p-1 border rounded" style="width: 100%;">
+          <option value="LM">LM</option>
+          <option value="Sqm">Sqm</option>
+          <option value="ea">ea</option>
+          <option value="Hrs" selected>Hrs</option>
+        </select>
       </td>
-      <td class="border border-gray-300 px-2 py-1 align-middle text-center"> <!-- Centered actions -->
+      <td class="border border-gray-300 px-2 py-1 flex items-center justify-between w-24">
         <!-- Photo Button -->
-        <button type="button" class="text-blue-500 hover:text-blue-700 photo-button inline-block align-middle mr-2" title="Add Photo">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+        <button type="button" class="text-blue-500 photo-button" title="Add Photo">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
             <path d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-3.586a1 1 0 01-.707-.293l-.414-.414A1 1 0 0010.586 4H9.414a1 1 0 00-.707.293l-.414.414A1 1 0 007.586 5H4z" />
             <path d="M10 12a3 3 0 100-6 3 3 0 000 6z" />
           </svg>
         </button>
         <!-- Delete Row Button -->
-        <button type="button" class="text-red-500 hover:text-red-700 delete-row inline-block align-middle font-bold text-lg" title="Delete Task">×</button>
+        <button type="button" class="text-red-500 delete-row" title="Delete Task">X</button>
       </td>
     </tr>
   </template>
 
   <script>
-    // --- Helper Functions ---
-    const getFilenames = (fileList) => {
-        let names = [];
-        for (let i = 0; i < fileList.length; i++) {
-            names.push(fileList[i].name);
-        }
-        return names.join(", ");
-    };
-
-    const updateFilenameDisplay = (inputElement, displayElementId) => {
-        const displayElement = document.getElementById(displayElementId);
-        if (inputElement.files.length > 0) {
-             displayElement.textContent = `Attached: ${getFilenames(inputElement.files)}`;
-             inputElement.dataset.filenames = getFilenames(inputElement.files); // Store for export
-        } else {
-            displayElement.textContent = "";
-             inputElement.dataset.filenames = ""; // Clear stored names
-        }
-    };
-
-    // --- Client Details Attachment Logic ---
+    // Store PDF file names when attached
     const otReportInput = document.getElementById('otReportAttachment');
+    otReportInput.addEventListener('change', (e) => {
+      let names = [];
+      for (let i = 0; i < e.target.files.length; i++) {
+        names.push(e.target.files[i].name);
+      }
+      e.target.dataset.filenames = names.join(", ");
+    });
     const drawingsInput = document.getElementById('drawingsAttachment');
+    drawingsInput.addEventListener('change', (e) => {
+      let names = [];
+      for (let i = 0; i < e.target.files.length; i++) {
+        names.push(e.target.files[i].name);
+      }
+      e.target.dataset.filenames = names.join(", ");
+    });
+    // Update selected value for PDF availability
     const otReportSelect = document.getElementById('otReportAvailable');
-    const drawingsSelect = document.getElementById('drawingsAvailable');
-    const otReportContainer = document.getElementById('otReportAttachmentContainer');
-    const drawingsContainer = document.getElementById('drawingsAttachmentContainer');
-
-    otReportInput.addEventListener('change', (e) => updateFilenameDisplay(e.target, 'otReportFilenames'));
-    drawingsInput.addEventListener('change', (e) => updateFilenameDisplay(e.target, 'drawingsFilenames'));
-
     otReportSelect.addEventListener('change', (e) => {
-      otReportContainer.classList.toggle('hidden', e.target.value !== 'yes');
-      e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No'; // Store for export
-      if (e.target.value === 'no') {
-          otReportInput.value = ''; // Clear file input if switched to 'No'
-          updateFilenameDisplay(otReportInput, 'otReportFilenames'); // Update display
-      }
+      e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
     });
+    const drawingsSelect = document.getElementById('drawingsAvailable');
     drawingsSelect.addEventListener('change', (e) => {
-      drawingsContainer.classList.toggle('hidden', e.target.value !== 'yes');
-      e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No'; // Store for export
-       if (e.target.value === 'no') {
-          drawingsInput.value = ''; // Clear file input
-          updateFilenameDisplay(drawingsInput, 'drawingsFilenames'); // Update display
-      }
+      e.target.dataset.selected = e.target.value === 'yes' ? 'Yes' : 'No';
     });
-    // Initialize dataset values
-    otReportSelect.dataset.selected = otReportSelect.value === 'yes' ? 'Yes' : 'No';
-    drawingsSelect.dataset.selected = drawingsSelect.value === 'yes' ? 'Yes' : 'No';
 
-
-    // --- Row Management ---
-    const addRow = (sectionName) => {
+    // Core function to add rows
+    const addRow = (sectionName, defaultData) => {
       const sectionDiv = document.querySelector(`[data-section="${sectionName}"]`);
       const tbody = sectionDiv.querySelector('.section-body');
       const template = document.getElementById('rowTemplate').content.cloneNode(true);
+      if (defaultData) {
+        template.querySelector('.task').value = defaultData.task || "";
+        template.querySelector('.description').value = defaultData.description || "";
+      }
       tbody.appendChild(template);
     };
 
-    // --- Event Delegation for Dynamic Elements ---
+    // Event listeners for delete and toggle buttons
     document.addEventListener('click', (e) => {
-      // Delete Row
       if (e.target && e.target.classList.contains('delete-row')) {
         const row = e.target.closest('.row');
-        // Optional: Add confirmation dialog here
         row.remove();
       }
-      // Toggle Section Content
       if (e.target && e.target.classList.contains('toggle-button')) {
         const targetSection = e.target.getAttribute('data-target');
         const sectionDiv = document.querySelector(`[data-section="${targetSection}"]`);
         const content = sectionDiv.querySelector('.section-content');
-        const isHidden = content.classList.toggle('hidden');
-        e.target.innerText = isHidden ? "►" : "▼";
-        e.target.setAttribute('aria-expanded', !isHidden);
+        if (content.classList.contains('hidden')) {
+          content.classList.remove('hidden');
+          e.target.innerText = "▼";
+          e.target.setAttribute('aria-expanded', "true");
+        } else {
+          content.classList.add('hidden');
+          e.target.innerText = "►";
+          e.target.setAttribute('aria-expanded', "false");
+        }
       }
-       // Add Row Button
-      if (e.target && e.target.classList.contains('add-row')) {
-         const sectionName = e.target.getAttribute('data-section');
-         addRow(sectionName);
-      }
-      // Delete Photo Button
-      if (e.target && e.target.classList.contains('delete-photo')) {
-          const photoContainer = e.target.closest('.photo-container');
-          const groupDiv = photoContainer.closest('.task-photo-group');
-          photoContainer.remove();
-          // Optional: Remove the groupDiv if it becomes empty
-          if (groupDiv && !groupDiv.querySelector('.photo-container')) {
-              groupDiv.remove();
-          }
-      }
-       // Add Photo Button (delegated)
-       const photoBtn = e.target.closest('.photo-button');
-       if (photoBtn) {
-            handlePhotoAdd(photoBtn);
-       }
+    });
+    document.querySelectorAll('.add-row').forEach(button => {
+      button.addEventListener('click', () => {
+        const sectionName = button.getAttribute('data-section');
+        addRow(sectionName);
+      });
     });
 
-    // --- Photo Handling ---
-    const handlePhotoAdd = (buttonElement) => {
-        const row = buttonElement.closest('.row');
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-        // fileInput.capture = 'environment'; // Use camera if available on mobile
-        fileInput.style.display = 'none';
-
-        fileInput.addEventListener('change', (event) => {
-          const file = event.target.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              const imgSrc = evt.target.result;
-              const taskCell = row.querySelector('.task');
-              const taskName = taskCell ? (taskCell.value.trim() || `Task Row ${[...row.parentNode.children].indexOf(row) + 1}`) : `Row ${[...row.parentNode.children].indexOf(row) + 1}`; // Get task name or row index
-              const sectionDiv = row.closest('[data-section]');
-              const photoGroupsContainer = sectionDiv.querySelector('.photo-groups');
-
-              // Find or create the group for this task
-              let groupDiv = photoGroupsContainer.querySelector(`.task-photo-group[data-task="${CSS.escape(taskName)}"]`);
-              if (!groupDiv) {
-                groupDiv = document.createElement('div');
-                groupDiv.setAttribute('data-task', taskName);
-                groupDiv.className = "task-photo-group mt-2 p-2 border rounded bg-gray-50";
-                const header = document.createElement('div');
-                header.className = "font-semibold mb-1 text-sm text-gray-700"; // Adjusted style
-                header.innerText = taskName + ": Photos";
-                groupDiv.appendChild(header);
-                photoGroupsContainer.appendChild(groupDiv);
-              }
-
-              // Create image container with delete button
-              const imgContainer = document.createElement('div');
-              imgContainer.className = "photo-container";
-
-              const imgElement = document.createElement('img');
-              imgElement.src = imgSrc;
-              imgElement.alt = `Photo for ${taskName}`;
-              imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer hover:opacity-80 transition-opacity";
-              imgElement.addEventListener('click', () => viewPhoto(imgElement.src, taskName)); // Click to view large
-
-              const deleteButton = document.createElement('button');
-              deleteButton.innerHTML = '×'; // Use HTML entity for 'X'
-              deleteButton.className = "delete-photo";
-              deleteButton.title = "Delete Photo";
-              // Delete handled by delegation above
-
-              const photoCount = groupDiv.querySelectorAll('.photo-container').length + 1;
-              const caption = document.createElement('div');
-               caption.className = "text-xs mt-1 text-gray-600";
-               caption.innerText = `Photo ${photoCount}`;
-
-
-              imgContainer.appendChild(imgElement);
-              imgContainer.appendChild(deleteButton);
-              imgContainer.appendChild(caption);
-              groupDiv.appendChild(imgContainer); // Add new photo to the group
-            };
-            reader.readAsDataURL(file);
-          }
-          fileInput.remove(); // Clean up the hidden input
-        });
-        document.body.appendChild(fileInput); // Required for event listener
-        fileInput.click();
-    };
-
-    const viewPhoto = (imgSrc, taskName) => {
-         const newWindow = window.open("about:blank", "_blank");
-         newWindow.document.write(
-            `<html>
-              <head>
-                <title>Photo - ${taskName || 'View Photo'}</title>
-                <style>body { margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#333; padding: 10px; box-sizing: border-box; } img { max-width:100%; max-height: calc(100vh - 20px); object-fit: contain; }</style>
-              </head>
-              <body>
-                <img src="${imgSrc}" alt="Photo for ${taskName || ''}">
-              </body>
-            </html>`
-          );
-          newWindow.document.close();
-    };
-
-    // --- Export Functions ---
-
-    // CSV Export
+    // CSV export event
     document.getElementById('exportCSV').addEventListener('click', () => {
       let csvData = "";
       const sections = document.querySelectorAll('[data-section]');
-
-      // Add Client Details
-      csvData += `"Client & Project Details"\n`;
-      csvData += `"Client Name","${document.getElementById('clientName').value}"\n`;
-      csvData += `"Client Address","${document.getElementById('clientAddress').value}"\n`;
-      csvData += `"Inspected On","${document.getElementById('inspectedOn').value}"\n`;
-      csvData += `"CSV Inspector","${document.getElementById('csvInspector').value}"\n`;
-      csvData += `"OT Report Available?","${otReportSelect.options[otReportSelect.selectedIndex].text}"\n`;
-      if (otReportSelect.value === 'yes') csvData += `"OT Reports Attached","${otReportInput.dataset.filenames || 'N/A'}"\n`;
-      csvData += `"Drawings Available?","${drawingsSelect.options[drawingsSelect.selectedIndex].text}"\n`;
-      if (drawingsSelect.value === 'yes') csvData += `"Drawings Attached","${drawingsInput.dataset.filenames || 'N/A'}"\n`;
-      csvData += "\n";
-
-
-      // Add Task Sections
       sections.forEach(sectionDiv => {
         const sectionName = sectionDiv.getAttribute('data-section');
-        if (sectionName === 'clientNotes' || sectionName === 'clientDetails') return; // Skip non-task sections
-
+        if (sectionName === 'clientNotes' || sectionName === 'clientDetails') return;
         const header = sectionDiv.querySelector('h2') ? sectionDiv.querySelector('h2').innerText : sectionName;
         csvData += `"${header}"\n`;
         csvData += `"Task","Description","Quantity","Unit"\n`;
-
         sectionDiv.querySelectorAll('.row').forEach(row => {
-          const task = row.querySelector('.task')?.value.replace(/"/g, '""') || ""; // Escape quotes
-          const desc = row.querySelector('.description')?.value.replace(/"/g, '""') || ""; // Escape quotes
-          const quantity = row.querySelector('.quantity')?.value || "0";
-          const unit = row.querySelector('.unit-select')?.value || "";
+          const task = row.querySelector('.task').value;
+          const desc = row.querySelector('.description').value;
+          const quantity = row.querySelector('.quantity').value;
+          const unit = row.querySelector('select').value;
           csvData += `"${task}","${desc}",${quantity},"${unit}"\n`;
         });
         csvData += "\n";
       });
-
-        // Add Client Notes
-      csvData += `"Client & Access Notes"\n`;
-      csvData += `"${document.getElementById('clientNotes').value.replace(/"/g, '""')}"\n\n`;
-
-
-      const csvWithBOM = "\ufeff" + csvData; // Add BOM for Excel compatibility
+      const csvWithBOM = "\ufeff" + csvData;
       const blob = new Blob([csvWithBOM], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -861,252 +692,171 @@
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
     });
 
-    // PDF Export
+    // PDF export event
     document.getElementById('exportPDF').addEventListener('click', () => {
       const element = document.getElementById('app');
-      // Temporarily hide export buttons for PDF generation
-      const buttons = element.querySelectorAll('#exportCSV, #exportPDF, #exportHTML');
-      buttons.forEach(btn => btn.style.display = 'none');
-
-       // Add a title page maybe? Or adjust options
-       const clientName = document.getElementById('clientName').value || "Unknown Client";
-       const inspectedOn = document.getElementById('inspectedOn').value || "N/A";
-
-
       const opt = {
-        margin:       [0.5, 0.5, 0.5, 0.5], // top, left, bottom, right
-        filename:     `Bathroom Checklist - ${clientName} - ${inspectedOn}.pdf`,
-        image:        { type: 'jpeg', quality: 0.95 },
-        html2canvas:  { scale: 2, useCORS: true, logging: false },
-        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-        pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] } // Try to avoid breaking elements
+        margin: 0.5,
+        filename: 'bathroom_renovation_checklist.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
-
-      html2pdf().set(opt).from(element).save().then(() => {
-          // Restore buttons after PDF is saved/generated
-           buttons.forEach(btn => btn.style.display = '');
-      }).catch(err => {
-           console.error("PDF generation failed:", err);
-           buttons.forEach(btn => btn.style.display = ''); // Ensure buttons are restored on error
-      });
+      html2pdf().set(opt).from(element).save();
     });
 
-    // HTML Export (Static Version) - CORRECTED
+    // Export HTML event – creates a static version of the current page
     document.getElementById('exportHTML').addEventListener('click', () => {
-      console.log("Starting HTML export...");
-      // Ensure select datasets are up-to-date based on current state
-       document.getElementById('otReportAvailable').dataset.selected = (otReportInput.files.length > 0 || (otReportInput.dataset.filenames && otReportInput.dataset.filenames !== "")) ? "Yes" : "No";
-       document.getElementById('drawingsAvailable').dataset.selected = (drawingsInput.files.length > 0 || (drawingsInput.dataset.filenames && drawingsInput.dataset.filenames !== "")) ? "Yes" : "No";
-
-
+      // Update PDF availability based on file inputs
+      const otReportFileInput = document.getElementById('otReportAttachment');
+      const drawingsFileInput = document.getElementById('drawingsAttachment');
+      document.getElementById('otReportAvailable').dataset.selected =
+        (otReportFileInput.dataset.filenames && otReportFileInput.dataset.filenames !== "") ? "Yes" : "No";
+      document.getElementById('drawingsAvailable').dataset.selected =
+        (drawingsFileInput.dataset.filenames && drawingsFileInput.dataset.filenames !== "") ? "Yes" : "No";
+      
       const appClone = document.getElementById('app').cloneNode(true);
-
-      // --- Clean up the clone for static export ---
-      console.log("Removing interactive elements...");
-      // Remove export buttons, add/delete row buttons, photo add/delete buttons, toggle buttons
-      appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML, .add-row, .delete-row, .photo-button, .delete-photo, .toggle-button').forEach(el => el.remove());
-      // Remove the photo group containers (only needed for live version's structure)
-      appClone.querySelectorAll('.photo-groups').forEach(container => container.remove()); // Keep images, remove the grouping divs
-
-
-      // --- Replace inputs/textareas/selects with static divs ---
-      console.log("Converting form elements to static...");
+      
+      // Remove export buttons from the clone
+      appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
+      
+      // Replace all inputs, textareas, and selects with static divs showing current values.
       appClone.querySelectorAll('input, textarea, select').forEach(el => {
-        // Skip file inputs used for attachments display if needed, or handle them
-        if (el.type === 'file' && (el.id === 'otReportAttachment' || el.id === 'drawingsAttachment')) {
-             const parentContainer = el.closest('.mt-2'); // Find parent container
-             const fileDisplayDiv = document.createElement('div');
-             fileDisplayDiv.className = "static-field"; // Use same styling
-             fileDisplayDiv.textContent = el.dataset.filenames ? `Attached: ${el.dataset.filenames}` : "No files attached";
-             if (parentContainer) {
-                 parentContainer.innerHTML = ''; // Clear original input/label
-                 parentContainer.appendChild(fileDisplayDiv); // Add static display
-             } else {
-                 el.remove(); // Fallback: just remove the input
-             }
-            return; // Skip further processing for these file inputs
-        }
-
         const staticEl = document.createElement('div');
         staticEl.className = "static-field";
-
-        if (el.tagName.toLowerCase() === 'textarea') {
-            staticEl.style.minHeight = el.rows > 1 ? `${el.rows * 1.5}em` : '2.5em'; // Approximate height
-            staticEl.textContent = el.value;
+        if (el.type === "file") {
+          staticEl.textContent = el.dataset.filenames ? el.dataset.filenames : "No files attached";
         } else if (el.tagName.toLowerCase() === 'select') {
-             // Special handling for unit selects
-            if (el.classList.contains('unit-select')) {
-                staticEl.textContent = el.options[el.selectedIndex].text;
-                staticEl.classList.add('static-unit-field'); // Add specific class for centering/styling
-            } else {
-                // Use dataset.selected for Yes/No selects, otherwise selected option text
-                staticEl.textContent = el.dataset.selected ? el.dataset.selected : el.options[el.selectedIndex].text;
-            }
-        } else if (el.type === 'date' && el.value) {
-             // Format date nicely if value exists
-            try {
-                 const date = new Date(el.value);
-                 // Add 1 day because input value is timezone naive and JS Date() assumes local/UTC based on string format
-                 date.setDate(date.getDate() + 1);
-                 staticEl.textContent = date.toLocaleDateString('en-AU', { // Example format
-                    year: 'numeric', month: 'long', day: 'numeric'
-                });
-            } catch (e) {
-                 staticEl.textContent = el.value; // Fallback to raw value on error
-            }
+          staticEl.textContent = el.dataset.selected ? el.dataset.selected : el.options[el.selectedIndex].text;
+        } else {
+          staticEl.textContent = el.value;
         }
-         else { // Handles text, number inputs etc.
-            staticEl.textContent = el.value;
-        }
-
-        // Replace the interactive element with the static div
-        // Handle the unit select's container properly
-         if (el.classList.contains('unit-select')) {
-             const container = el.closest('.unit-select-container');
-             if (container) {
-                container.parentNode.replaceChild(staticEl, container); // Replace the container TD's content
-             } else {
-                 el.parentNode.replaceChild(staticEl, el); // Fallback
-             }
-         } else {
-              el.parentNode.replaceChild(staticEl, el);
-         }
+        el.parentNode.replaceChild(staticEl, el);
       });
-
-
-      // --- Wrap existing images (added photos) in anchor tags ---
-      console.log("Processing images...");
-      appClone.querySelectorAll('img').forEach(img => {
-        // Only process images that are dynamically added photos (have data: URL and are in a photo-container)
-        if (img.src && img.src.startsWith('data:image') && img.closest('.photo-container')) {
-          const a = document.createElement('a');
-          a.href = img.src; // *** THE FIX: Link directly to the image data ***
-          a.target = "_blank"; // Open in a new tab
-          a.title = img.alt || "View full size photo"; // Add tooltip
-          a.style.display = 'inline-block'; // Ensure link behaves like the container
-
-           // Clone the image to put inside the link
-          const imgInsideLink = img.cloneNode(true);
-          imgInsideLink.style.cursor = 'pointer'; // Visual cue
-
-          // Find the original photo container to replace
-           const photoContainer = img.closest('.photo-container');
-
-          // Create a new simple container for the link+caption
-          const newContainer = document.createElement('div');
-          newContainer.className = "photo-container"; // Keep similar class for styling/layout
-
-          // Find and clone the caption if it exists
-          const caption = photoContainer.querySelector('.text-xs');
-
-          newContainer.appendChild(a); // Add link (which contains the image)
-          a.appendChild(imgInsideLink); // Put image inside link
-
-           if (caption) {
-               newContainer.appendChild(caption.cloneNode(true));
-           }
-
-           // Replace the original photo container with the new one containing the link
-           if (photoContainer && photoContainer.parentNode) {
-                photoContainer.parentNode.replaceChild(newContainer, photoContainer);
-           }
-
-        } else if (!img.src || !img.src.startsWith('data:image')) {
-            // Optional: Remove non-data images if they are leftovers from UI elements
-            // img.remove();
-             console.log("Skipping non-data-URL image:", img.alt || img.src.substring(0, 50));
-        }
+      
+      // Wrap images in anchor tags so that the anchor's href is set to the image src.
+      appClone.querySelectorAll('img').forEach(oldImg => {
+        const img = oldImg.cloneNode(true);
+        const a = document.createElement('a');
+        a.href = img.src;
+        a.target = "_blank";
+        oldImg.parentNode.replaceChild(a, oldImg);
+        a.appendChild(img);
       });
-
-       // --- Prepare Final HTML ---
-       console.log("Generating final HTML string...");
-        const headClone = document.querySelector('head').cloneNode(true);
-
-        // Remove external JS/CSS links if creating a truly standalone file
-        headClone.querySelectorAll('link[href*="tailwind"], script[src*="html2pdf"]').forEach(el => el.remove());
-        // Add basic inline styles for self-containment
-        const inlineStyles = document.createElement('style');
-        inlineStyles.textContent = `
-            /* --- Basic Styles for Static HTML Export --- */
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; margin: 0; padding: 0; background-color: #f3f4f6; color: #1f2937; font-size: 14px; line-height: 1.5; }
-            .container { max-width: 1024px; margin: 1rem auto; padding: 1rem; } /* Simplified container */
-            header { margin-bottom: 1rem; text-align: center; }
-            h1 { font-size: 1.875rem; font-weight: bold; margin-bottom: 0.5rem; }
-            h2 { font-size: 1.25rem; font-weight: bold; padding: 0.5rem 1rem; border-bottom: 1px solid #d1d5db; margin: 0; } /* Reset margin */
-            p { margin-bottom: 0.5rem; }
-            .mb-8 { margin-bottom: 2rem; background-color: #ffffff; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); border-radius: 0.375rem; overflow: hidden; } /* Added overflow hidden */
-            .px-4 { padding-left: 1rem; padding-right: 1rem; }
-            .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-            .flex { display: flex; }
-            .flex-col { flex-direction: column; }
-            .md\\:flex-row { display: flex; flex-direction: row; } /* Simplified for static */
-            .md\\:space-x-4 > * + * { margin-left: 1rem; } /* Simplified spacing */
-            .md\\:w-1/2 { width: 50%; }
-            .space-y-4 > * + * { margin-top: 1rem; }
-            .block { display: block; }
-            .font-semibold { font-weight: 600; }
-            .text-sm { font-size: 0.875rem; }
-            .text-gray-600 { color: #4b5563; }
-            .text-gray-700 { color: #374151; }
-            .list-disc { list-style-type: disc; }
-            .list-inside { list-style-position: inside; padding-left: 1em; margin-bottom: 1rem;}
-            /* Table Styles */
-            table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 1rem; }
-            th, td { border: 1px solid #d1d5db; padding: 0.5rem; text-align: left; vertical-align: top; word-wrap: break-word; }
-            th { background-color: #f9fafb; font-weight: bold; }
-            td { background-color: #ffffff; }
-            td:nth-child(3), td:nth-child(4) { background-color: #f3f4f6; } /* Quantity/Unit background */
-            /* Static Field Styles */
-            .static-field { border: 1px solid #e5e7eb; padding: 0.5rem; background: #f9fafb; min-height: 2.5em; display: block; width: 100%; white-space: pre-wrap; word-wrap: break-word; box-sizing: border-box; border-radius: 0.25rem; }
-            td > .static-field { min-height: 4em; border: none; background: transparent; padding: 0; } /* Integrate better in table */
-            .static-unit-field { text-align: center; font-weight: 500; background: transparent !important; } /* Style unit specifically */
-             /* Photo Styles */
-            .task-photo-group { margin-top: 1rem; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.25rem; background-color: #f9fafb; }
-            .task-photo-group .font-semibold { font-weight: 600; margin-bottom: 0.5rem; font-size: 0.875rem; color: #374151;}
-            .photo-container { display: inline-block; margin: 0.25rem; text-align: center; vertical-align: top; }
-            .photo-container a { text-decoration: none; color: inherit; }
-            .photo-container img { width: 6rem; height: 6rem; object-fit: cover; border: 1px solid #d1d5db; border-radius: 0.25rem; display: block; margin: 0 auto; cursor: pointer; }
-             .photo-container .text-xs { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
-             /* Section Header Colors */
-            [data-section="clientDetails"] > div:first-child { background-color: #e0e7ff; } /* indigo-100 */
-            [data-section="siteSetup"] > div:first-child { background-color: #fef3c7; } /* yellow-100 */
-            [data-section="demolition"] > div:first-child { background-color: #f3f4f6; } /* gray-100 */
-            [data-section="asbestos"] > div:first-child { background-color: #fee2e2; } /* red-100 */
-            [data-section="carpentry"] > div:first-child { background-color: #d1fae5; } /* green-100 */
-            [data-section="plumbing"] > div:first-child { background-color: #dbeafe; } /* blue-100 */
-            [data-section="electrical"] > div:first-child { background-color: #ffedd5; } /* orange-100 */
-            [data-section="waterproofing"] > div:first-child { background-color: #ccfbf1; } /* teal-100 */
-            [data-section="tiling"] > div:first-child { background-color: #f3e8ff; } /* purple-100 */
-            [data-section="painting"] > div:first-child { background-color: #fce7f3; } /* pink-100 */
-            [data-section="glazing"] > div:first-child { background-color: #e0e7ff; } /* indigo-100 */
-            [data-section="finalFitOff"] > div:first-child { background-color: #ecfccb; } /* lime-100 */
-            [data-section="contingency"] > div:first-child { background-color: #fecaca; } /* red-200 */
-            [data-section="clientNotes"] > div:first-child { background-color: #f9fafb; } /* gray-50 */
-        `;
-         headClone.appendChild(inlineStyles);
-
-        const doctype = "<!DOCTYPE html>";
-        const headHTML = headClone.outerHTML;
-        // Wrap the cloned app's content in body and container for structure
-        const bodyHTML = `<body class="bg-gray-100 text-gray-800"><div class="container mx-auto p-4">${appClone.innerHTML}</div></body>`;
-        const fullHTML = `${doctype}<html lang="en">${headHTML}${bodyHTML}</html>`;
-
-        // --- Create and trigger download ---
-        console.log("Creating blob and download link...");
-        const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
-        const aDownload = document.createElement('a');
-        aDownload.href = URL.createObjectURL(blob);
-        aDownload.download = 'bathroom_renovation_checklist_static.html';
-        document.body.appendChild(aDownload); // Append required for Firefox
-        aDownload.click();
-        document.body.removeChild(aDownload); // Clean up link
-        URL.revokeObjectURL(aDownload.href); // Release object URL
-        console.log("HTML export finished.");
+      
+      const doctype = "<!DOCTYPE html>";
+      const headHTML = document.querySelector('head').outerHTML;
+      const bodyHTML = `<body class="bg-gray-100 text-gray-800">${appClone.outerHTML}</body>`;
+      const fullHTML = `${doctype}<html lang="en">${headHTML}${bodyHTML}</html>`;
+      
+      const blob = new Blob([fullHTML], { type: 'text/html' });
+      const aDownload = document.createElement('a');
+      aDownload.href = URL.createObjectURL(blob);
+      aDownload.download = 'bathroom_renovation_checklist_static.html';
+      aDownload.click();
     });
 
+    // Photo button event for the online version
+    document.addEventListener('click', (e) => {
+      const photoBtn = e.target.closest('.photo-button');
+      if (photoBtn) {
+        const row = photoBtn.closest('.row');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.capture = 'environment';
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              const imgSrc = evt.target.result;
+              const taskName = row.querySelector('.task').value.trim() || "Unnamed Task";
+              const sectionDiv = row.closest('[data-section]');
+              let photoGroupsContainer = sectionDiv.querySelector('.photo-groups');
+              if (!photoGroupsContainer) {
+                photoGroupsContainer = document.createElement('div');
+                photoGroupsContainer.className = "photo-groups mt-2";
+                const addTaskButton = sectionDiv.querySelector('.add-row');
+                addTaskButton.insertAdjacentElement('afterend', photoGroupsContainer);
+              }
+              let groupDiv = Array.from(photoGroupsContainer.children)
+                .find(div => div.getAttribute('data-task') === taskName);
+              if (!groupDiv) {
+                groupDiv = document.createElement('div');
+                groupDiv.setAttribute('data-task', taskName);
+                groupDiv.className = "task-photo-group mt-2 p-2 border rounded bg-gray-50";
+                const header = document.createElement('div');
+                header.className = "font-bold mb-1";
+                header.innerText = taskName + " photos";
+                groupDiv.appendChild(header);
+                photoGroupsContainer.appendChild(groupDiv);
+              }
+              const imgContainer = document.createElement('div');
+              imgContainer.className = "photo-container";
+              const imgElement = document.createElement('img');
+              imgElement.src = imgSrc;
+              imgElement.alt = "Photo for " + taskName;
+              imgElement.className = "w-24 h-24 object-cover border rounded cursor-pointer";
+              imgElement.addEventListener('click', () => {
+                const newWindow = window.open("about:blank", "_blank");
+                newWindow.document.write(
+                  `<html>
+                    <head>
+                      <title>Photo - ${taskName}</title>
+                      <style>body { margin:0; display:flex; justify-content:center; align-items:center; height:100vh; background:#000; }</style>
+                    </head>
+                    <body>
+                      <img src="${imgElement.src}" style="max-width:100%; max-height:100%;" alt="Photo for ${taskName}">
+                    </body>
+                  </html>`
+                );
+                newWindow.document.close();
+              });
+              const deleteButton = document.createElement('button');
+              deleteButton.innerText = '×';
+              deleteButton.className = "delete-photo";
+              deleteButton.title = "Delete Photo";
+              deleteButton.addEventListener('click', () => {
+                imgContainer.remove();
+              });
+              const caption = document.createElement('div');
+              caption.className = "text-xs";
+              const photoCount = groupDiv.querySelectorAll('img').length + 1;
+              caption.innerText = "Photo " + photoCount;
+              imgContainer.appendChild(imgElement);
+              imgContainer.appendChild(deleteButton);
+              imgContainer.appendChild(caption);
+              groupDiv.appendChild(imgContainer);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+        fileInput.click();
+      }
+    });
+
+    // OT Report attachment toggle
+    document.getElementById('otReportAvailable').addEventListener('change', (e) => {
+      const container = document.getElementById('otReportAttachmentContainer');
+      if (e.target.value === 'yes') {
+        container.classList.remove('hidden');
+      } else {
+        container.classList.add('hidden');
+      }
+    });
+    // Drawings attachment toggle
+    document.getElementById('drawingsAvailable').addEventListener('change', (e) => {
+      const container = document.getElementById('drawingsAttachmentContainer');
+      if (e.target.value === 'yes') {
+        container.classList.remove('hidden');
+      } else {
+        container.classList.add('hidden');
+      }
+    });
   </script>
 </body>
 </html>

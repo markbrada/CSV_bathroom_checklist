@@ -707,9 +707,9 @@
       html2pdf().set(opt).from(element).save();
     });
 
-    // Export HTML event – creates a static version of the current page
+    // Export HTML event – creates a static version of the current page with larger images.
     document.getElementById('exportHTML').addEventListener('click', () => {
-      // Update PDF availability based on file inputs
+      // Update PDF availability based on file inputs.
       const otReportFileInput = document.getElementById('otReportAttachment');
       const drawingsFileInput = document.getElementById('drawingsAttachment');
       document.getElementById('otReportAvailable').dataset.selected =
@@ -719,7 +719,7 @@
       
       const appClone = document.getElementById('app').cloneNode(true);
       
-      // Remove export buttons from the clone
+      // Remove export buttons from the clone.
       appClone.querySelectorAll('#exportCSV, #exportPDF, #exportHTML').forEach(btn => btn.remove());
       
       // Replace all inputs, textareas, and selects with static divs showing current values.
@@ -736,14 +736,15 @@
         el.parentNode.replaceChild(staticEl, el);
       });
       
-      // Wrap images in anchor tags so that the anchor's href is set to the image src.
-      appClone.querySelectorAll('img').forEach(oldImg => {
-        const img = oldImg.cloneNode(true);
-        const a = document.createElement('a');
-        a.href = img.src;
-        a.target = "_blank";
-        oldImg.parentNode.replaceChild(a, oldImg);
-        a.appendChild(img);
+      // For exported version, remove any anchor tags around images and enlarge images.
+      appClone.querySelectorAll('img').forEach(img => {
+        // If image is wrapped in an anchor, unwrap it.
+        if (img.parentNode.tagName.toLowerCase() === 'a') {
+          img.parentNode.replaceWith(img);
+        }
+        // Update image size classes: remove w-24/h-24 and add w-36/h-36.
+        img.classList.remove('w-24', 'h-24');
+        img.classList.add('w-36', 'h-36');
       });
       
       const doctype = "<!DOCTYPE html>";
@@ -758,7 +759,7 @@
       aDownload.click();
     });
 
-    // Photo button event for the online version
+    // Photo button event for online version.
     document.addEventListener('click', (e) => {
       const photoBtn = e.target.closest('.photo-button');
       if (photoBtn) {
